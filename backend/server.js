@@ -278,6 +278,108 @@ app.get("/api/games/:id", authToken, async (req, res) => {
     }
 });
 
+app.post("/api/games/:id/guess", authToken, async (req, res) => {
+    try {
+        const gameId = req.params.id;
+        const { word } = req.body;
+
+        // Controllo che sia stata inserita una parola
+        if (!word || !word.trim()) {
+            return res.status(400).json({
+                message: "Inserisci una parola valida"
+            });
+        }
+
+        // Recuperiamo la partita dell'utente autenticato
+        const gameResult = await pool.query(
+            `SELECT *
+             FROM games
+             WHERE id = $1 AND user_id = $2`,
+            [gameId, req.user.userId]
+        );
+
+        if (gameResult.rows.length === 0) {
+            return res.status(404).json({
+                message: "Partita non trovata"
+            });
+        }
+
+        const game = gameResult.rows[0];
+
+        // Non permettiamo tentativi su partite già terminate
+        if (game.status !== "in_progress") {
+            return res.status(400).json({
+                message: "La partita è già terminata"
+            });
+        }
+
+        const normalizedWord = word.trim().toLowerCase();
+
+        // Controlliamo se la parola era già stata tentata correttamente
+        const alreadyGuessed = game.guessed_words.some(
+            guessedWord => guessedWord.toLowerCase() === normalizedWord
+        );
+
+        if (alreadyGuessed) {
+            return res.status(400).json({
+                message: "Questa parola è già stata indovinata"
+            });
+        }
+
+        // Cerchiamo tutte le parole presenti nell'articolo
+        const articleWords = game.article_text.match(
+            /[\p{L}\p{M}]+/gu
+        ) || [];
+
+        const wordExists = articleWords.some(
+            articleWord => articleWord.toLowerCase() === normalizedWord
+        );
+
+        let updatedGuessedWords = game.guessed_words;
+
+        if (wordExists) {
+            updatedGuessedWords = [
+                ...game.guessed_words,
+                normalizedWord
+            ];
+        }
+
+        // Aumentiamo sempre il numero di tentativi
+        const updateResult = await pool.query(
+            `UPDATE games
+             SET guessed_words = $1,
+                 attempts = attempts + 1
+             WHERE id = $2
+             RETURNING *`,
+            [updatedGuessedWords, gameId]
+        );
+
+        const updatedGame = updateResult.rows[0];
+
+        const maskedText = maskText(
+            updatedGame.article_text,
+            updatedGame.guessed_words
+        );
+
+        res.status(200).json({
+            correct: wordExists,
+            message: wordExists
+                ? "Parola corretta!"
+                : "Parola non presente nell'articolo",
+            attempts: updatedGame.attempts,
+            guessed_words: updatedGame.guessed_words,
+            masked_text: maskedText
+        });
+
+    } catch (error) {
+        console.error("Errore tentativo parola:", error);
+
+        res.status(500).json({
+            message: "Errore durante il tentativo"
+        });
+    }
+});
+
 //avvia il server
 app.listen(PORT, () => {
     console.log(`Server WIKIBLANK avviato sulla porta ${PORT}`);
