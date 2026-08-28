@@ -1,0 +1,16 @@
+# Dipendenze Node.js
+node_modules/
+
+# Variabili d'ambiente e credenziali
+.env
+.env.*
+
+# Log
+*.log
+
+# File di sistema
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
