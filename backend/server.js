@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const authToken = require("./middleware/auth"); //importa il middleware
 const getRandomArticle = require("./services/wikipedia"); //importa la funzione per l'articolo casuale
+const maskText = require("./utils/secretText");
 
 dotenv.config(); //dice a Node di caricare le variabili presenti nel futuro file
 
