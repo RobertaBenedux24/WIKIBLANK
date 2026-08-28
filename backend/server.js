@@ -5,7 +5,8 @@ const dotenv = require("dotenv") //serve per leggere configurazioni riservate da
 const pool = require("./db"); //importa ciò che viene esportato dal dile db.js e lo chiamiamo pool
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const authToken = require("./middleware/auth") //importa il middleware
+const authToken = require("./middleware/auth"); //importa il middleware
+const getRandomArticle = require("./services/wikipedia"); //importa la funzione per l'articolo casuale
 
 dotenv.config(); //dice a Node di caricare le variabili presenti nel futuro file
 
@@ -180,6 +181,21 @@ app.get("/api/profile", authToken, async (req, res) => {
 
         res.status(500).json({
             message: "Errore durante il recupero del profilo"
+        });
+    }
+});
+
+app.get("/api/wiki/random", async (req, res) => {
+    try {
+        const article = await getRandomArticle();
+
+        res.status(200).json(article);
+
+    } catch (error) {
+        console.error("Errore MediaWiki:", error);
+
+        res.status(500).json({
+            message: "Errore durante il recupero dell'articolo"
         });
     }
 });
