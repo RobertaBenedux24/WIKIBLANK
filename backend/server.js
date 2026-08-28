@@ -501,6 +501,35 @@ app.post("/api/games/:id/abandon", authToken, async (req, res) => {
     }
 });
 
+app.get("/api/games", authToken, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT
+                id,
+                status,
+                attempts,
+                guessed_words,
+                started_at,
+                finished_at
+             FROM games
+             WHERE user_id = $1
+             ORDER BY started_at DESC`,
+            [req.user.userId]
+        );
+
+        res.status(200).json({
+            games: result.rows
+        });
+
+    } catch (error) {
+        console.error("Errore recupero partite:", error);
+
+        res.status(500).json({
+            message: "Errore durante il recupero delle partite"
+        });
+    }
+});
+
 //avvia il server
 app.listen(PORT, () => {
     console.log(`Server WIKIBLANK avviato sulla porta ${PORT}`);
