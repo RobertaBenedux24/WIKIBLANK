@@ -200,6 +200,39 @@ app.get("/api/wiki/random", async (req, res) => {
     }
 });
 
+app.post("/api/games", authToken, async (req, res) => {
+    try {
+        const article = await getRandomArticle();
+
+        const result = await pool.query(
+            `INSERT INTO games (
+                user_id,
+                article_title,
+                article_text
+            )
+            VALUES ($1, $2, $3)
+            RETURNING id, user_id, status, attempts, guessed_words, started_at`,
+            [
+                req.user.userId,
+                article.title,
+                article.text
+            ]
+        );
+
+        res.status(201).json({
+            message: "Partita creata con successo",
+            game: result.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Errore creazione partita:", error);
+
+        res.status(500).json({
+            message: "Errore durante la creazione della partita"
+        });
+    }
+});
+
 //avvia il server
 app.listen(PORT, () => {
     console.log(`Server WIKIBLANK avviato sulla porta ${PORT}`);
