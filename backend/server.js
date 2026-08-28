@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const authToken = require("./middleware/auth"); //importa il middleware
 const getRandomArticle = require("./services/wikipedia"); //importa la funzione per l'articolo casuale
 const maskText = require("./utils/secretText");
+const normalizeText = require("./utils/normalizeText");
 
 dotenv.config(); //dice a Node di caricare le variabili presenti nel futuro file
 
@@ -376,6 +377,72 @@ app.post("/api/games/:id/guess", authToken, async (req, res) => {
 
         res.status(500).json({
             message: "Errore durante il tentativo"
+        });
+    }
+});
+
+app.post("/api/games/:id/title", authToken, async (req, res) => {
+    try {
+        const gameId = req.params.id;
+        const { title } = req.body;
+
+        if (!title || !title.trim()) {
+            return res.status(400).json({
+                message: "Inserisci un titolo valido"
+            });
+        }
+
+        const gameResult = await pool.query(
+            `SELECT *
+             FROM games
+             WHERE id = $1 AND user_id = $2`,
+            [gameId, req.user.userId]
+        );
+
+        if (gameResult.rows.length === 0) {
+            return res.status(404).json({
+                message: "Partita non trovata"
+            });
+        }
+
+        const game = gameResult.rows[0];
+
+        if (game.status !== "in_progress") {
+            return res.status(400).json({
+                message: "La partita è già terminata"
+            });
+        }
+
+        const guessedTitle = normalizeText(title);
+        const correctTitle = normalizeText(game.article_title);
+
+        if (guessedTitle !== correctTitle) {
+            return res.status(200).json({
+                correct: false,
+                message: "Titolo non corretto"
+            });
+        }
+
+        const updateResult = await pool.query(
+            `UPDATE games
+             SET status = 'won',
+                 finished_at = CURRENT_TIMESTAMP
+             WHERE id = $1
+             RETURNING id, status, article_title, started_at, finished_at, attempts`,
+            [gameId]
+        );
+
+        res.status(200).json({
+            correct: true,
+            message: "Titolo corretto! Hai vinto!",
+            game: updateResult.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Errore tentativo titolo:", error);
+
+        res.status(500).json({
+            message: "Errore durante il tentativo del titolo"
         });
     }
 });
