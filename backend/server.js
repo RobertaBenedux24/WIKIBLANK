@@ -447,6 +447,60 @@ app.post("/api/games/:id/title", authToken, async (req, res) => {
     }
 });
 
+app.post("/api/games/:id/abandon", authenticateToken, async (req, res) => {
+    try {
+        const gameId = req.params.id;
+
+        const gameResult = await pool.query(
+            `SELECT *
+             FROM games
+             WHERE id = $1 AND user_id = $2`,
+            [gameId, req.user.userId]
+        );
+
+        if (gameResult.rows.length === 0) {
+            return res.status(404).json({
+                message: "Partita non trovata"
+            });
+        }
+
+        const game = gameResult.rows[0];
+
+        if (game.status !== "in_progress") {
+            return res.status(400).json({
+                message: "La partita è già terminata"
+            });
+        }
+
+        const updateResult = await pool.query(
+            `UPDATE games
+             SET status = 'abandoned',
+                 finished_at = CURRENT_TIMESTAMP
+             WHERE id = $1
+             RETURNING id,
+                       status,
+                       article_title,
+                       attempts,
+                       guessed_words,
+                       started_at,
+                       finished_at`,
+            [gameId]
+        );
+
+        res.status(200).json({
+            message: "Partita abbandonata",
+            game: updateResult.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Errore abbandono partita:", error);
+
+        res.status(500).json({
+            message: "Errore durante l'abbandono della partita"
+        });
+    }
+});
+
 //avvia il server
 app.listen(PORT, () => {
     console.log(`Server WIKIBLANK avviato sulla porta ${PORT}`);
