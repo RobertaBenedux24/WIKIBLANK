@@ -447,7 +447,7 @@ app.post("/api/games/:id/title", authToken, async (req, res) => {
     }
 });
 
-app.post("/api/games/:id/abandon", authenticateToken, async (req, res) => {
+app.post("/api/games/:id/abandon", authToken, async (req, res) => {
     try {
         const gameId = req.params.id;
 
