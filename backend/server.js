@@ -233,6 +233,50 @@ app.post("/api/games", authToken, async (req, res) => {
     }
 });
 
+app.get("/api/games/:id", authToken, async (req, res) => {
+    try {
+        const gameId = req.params.id;
+
+        const result = await pool.query(
+            `SELECT *
+             FROM games
+             WHERE id = $1 AND user_id = $2`,
+            [gameId, req.user.userId]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                message: "Partita non trovata"
+            });
+        }
+
+        const game = result.rows[0];
+
+        const maskedText = maskText(
+            game.article_text,
+            game.guessed_words
+        );
+
+        res.status(200).json({
+            game: {
+                id: game.id,
+                status: game.status,
+                attempts: game.attempts,
+                guessed_words: game.guessed_words,
+                started_at: game.started_at,
+                masked_text: maskedText
+            }
+        });
+
+    } catch (error) {
+        console.error("Errore recupero partita:", error);
+
+        res.status(500).json({
+            message: "Errore durante il recupero della partita"
+        });
+    }
+});
+
 //avvia il server
 app.listen(PORT, () => {
     console.log(`Server WIKIBLANK avviato sulla porta ${PORT}`);
