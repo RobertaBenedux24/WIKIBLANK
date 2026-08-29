@@ -537,6 +537,61 @@ app.get("/api/games", authToken, async (req, res) => {
     }
 });
 
+app.get("/api/completed-games", async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT
+                g.id,
+                g.status,
+                g.article_title,
+                g.article_text,
+                g.guessed_words,
+                g.attempts,
+                g.started_at,
+                g.finished_at,
+                u.username
+             FROM games g
+             JOIN users u ON g.user_id = u.id
+             WHERE g.status IN ('won', 'abandoned')
+             ORDER BY g.finished_at DESC`
+        );
+
+        const games = result.rows.map(game => {
+            const maskedText = maskText(
+                game.article_text,
+                game.guessed_words
+            );
+
+            const durationSeconds = Math.floor(
+                (new Date(game.finished_at) - new Date(game.started_at)) / 1000
+            );
+
+            return {
+                id: game.id,
+                username: game.username,
+                status: game.status,
+                article_title: game.article_title,
+                masked_text: maskedText,
+                attempts: game.attempts,
+                duration_seconds: durationSeconds,
+                started_at: game.started_at,
+                finished_at: game.finished_at
+            };
+        });
+
+        res.status(200).json({
+            games: games
+        });
+
+    } catch (error) {
+        console.error("Errore recupero partite concluse:", error);
+
+        res.status(500).json({
+            message: "Errore durante il recupero delle partite concluse"
+        });
+    }
+});
+
 //avvia il server
 app.listen(PORT, () => {
     console.log(`Server WIKIBLANK avviato sulla porta ${PORT}`);
