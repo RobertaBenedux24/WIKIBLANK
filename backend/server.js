@@ -634,6 +634,51 @@ app.get("/api/classification", async (req, res) => {
     }
 });
 
+app.get("/api/stats", authToken, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT
+                COUNT(*) AS total_games,
+                COUNT(*) FILTER (WHERE status = 'won') AS wins,
+                COUNT(*) FILTER (WHERE status = 'abandoned') AS abandoned_games,
+                COUNT(*) FILTER (WHERE status = 'in_progress') AS games_in_progress,
+                COALESCE(SUM(attempts), 0) AS total_attempts,
+                AVG(
+                    CASE
+                        WHEN status = 'won'
+                        THEN EXTRACT(EPOCH FROM (finished_at - started_at))
+                    END
+                ) AS average_win_time_seconds
+             FROM games
+             WHERE user_id = $1`,
+            [req.user.userId]
+        );
+
+        const stats = result.rows[0];
+
+        res.status(200).json({
+            stats: {
+                total_games: Number(stats.total_games),
+                wins: Number(stats.wins),
+                abandoned_games: Number(stats.abandoned_games),
+                games_in_progress: Number(stats.games_in_progress),
+                total_attempts: Number(stats.total_attempts),
+                average_win_time_seconds:
+                    stats.average_win_time_seconds !== null
+                        ? Math.round(Number(stats.average_win_time_seconds))
+                        : null
+            }
+        });
+
+    } catch (error) {
+        console.error("Errore statistiche utente:", error);
+
+        res.status(500).json({
+            message: "Errore durante il recupero delle statistiche"
+        });
+    }
+});
+
 //avvia il server
 app.listen(PORT, () => {
     console.log(`Server WIKIBLANK avviato sulla porta ${PORT}`);
