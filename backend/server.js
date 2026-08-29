@@ -259,15 +259,22 @@ app.get("/api/games/:id", authToken, async (req, res) => {
             game.guessed_words
         );
 
+        const responseGame = {
+            id: game.id,
+            status: game.status,
+            attempts: game.attempts,
+            guessed_words: game.guessed_words,
+            started_at: game.started_at,
+            finished_at: game.finished_at,
+            masked_text: maskedText
+        };
+
+        if (game.status !== "in_progress") {
+            responseGame.article_title = game.article_title;
+        }
+
         res.status(200).json({
-            game: {
-                id: game.id,
-                status: game.status,
-                attempts: game.attempts,
-                guessed_words: game.guessed_words,
-                started_at: game.started_at,
-                masked_text: maskedText
-            }
+            game: responseGame
         });
 
     } catch (error) {
