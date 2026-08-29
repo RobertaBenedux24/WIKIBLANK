@@ -592,6 +592,48 @@ app.get("/api/completed-games", async (req, res) => {
     }
 });
 
+app.get("/api/classification", async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT
+                u.id AS user_id,
+                u.username,
+                COUNT(g.id) AS wins,
+                AVG(
+                    EXTRACT(EPOCH FROM (g.finished_at - g.started_at))
+                ) AS average_time_seconds
+             FROM users u
+             JOIN games g ON g.user_id = u.id
+             WHERE g.status = 'won'
+             GROUP BY u.id, u.username
+             ORDER BY
+                average_time_seconds ASC,
+                wins DESC`
+        );
+
+        const list = result.rows.map((row, index) => ({
+            position: index + 1,
+            user_id: row.user_id,
+            username: row.username,
+            wins: Number(row.wins),
+            average_time_seconds: Math.round(
+                Number(row.average_time_seconds)
+            )
+        }));
+
+        res.status(200).json({
+            list: list
+        });
+
+    } catch (error) {
+        console.error("Errore classifica:", error);
+
+        res.status(500).json({
+            message: "Errore durante il recupero della classifica"
+        });
+    }
+});
+
 //avvia il server
 app.listen(PORT, () => {
     console.log(`Server WIKIBLANK avviato sulla porta ${PORT}`);
