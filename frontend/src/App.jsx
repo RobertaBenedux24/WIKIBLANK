@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Play from "./pages/Play";
 import Game from "./pages/Game";
+import Games from "./pages/Games";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
 
                 <Route path="/game/:id" element={<Game />} />
 
+                <Route path="/games" element={<Games />} />
             </Routes>
         </>
     );
