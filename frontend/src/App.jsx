@@ -8,6 +8,8 @@ import Register from "./pages/Register";
 import Play from "./pages/Play";
 import Game from "./pages/Game";
 import Games from "./pages/Games";
+import Classification from "./pages/Classification";
+import Profile from "./pages/Profile";
 
 function App() {
     return (
@@ -26,6 +28,11 @@ function App() {
                 <Route path="/game/:id" element={<Game />} />
 
                 <Route path="/games" element={<Games />} />
+
+                <Route path="/classification" element={<Classification />} />
+
+                <Route path="/profile" element={<Profile />} />
+
             </Routes>
         </>
     );
