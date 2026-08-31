@@ -1,12 +1,35 @@
 function Home() {
     return (
-        <div>
-            <h1>WIKIBLANK</h1>
+        <div className="page">
 
-            <p>
-                Indovina il titolo dell'articolo Wikipedia
-                scoprendo le parole nascoste.
-            </p>
+            <div className="card">
+                <h1>WIKIBLANK</h1>
+
+                <p>
+                    Scopri le parole nascoste e prova a
+                    indovinare il titolo dell'articolo Wikipedia.
+                </p>
+            </div>
+
+            <div className="card">
+                <h2>Come si gioca</h2>
+
+                <p>
+                    Avvia una partita e prova parole che
+                    potrebbero essere presenti nell'articolo.
+                </p>
+
+                <p>
+                    Ogni parola corretta viene rivelata in
+                    tutte le sue occorrenze.
+                </p>
+
+                <p>
+                    Quando pensi di aver capito l'articolo,
+                    prova a indovinarne il titolo.
+                </p>
+            </div>
+
         </div>
     );
 }

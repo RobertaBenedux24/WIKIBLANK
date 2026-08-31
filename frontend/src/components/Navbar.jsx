@@ -14,41 +14,48 @@ function Navbar() {
     };
 
     return (
-        <nav>
-            <Link to="/">WIKIBLANK</Link>
+        <nav className="navbar">
 
-            <div>
-                <Link to="/">Home </Link>
-                <Link to="/completed-games"> Partite concluse </Link>
-                <Link to="/classification"> Classifica </Link>
+            <Link to="/" className="navbar-logo">
+            WIKIBLANK </Link>
 
-                {!token && (
-                    <>
-                        <Link to="/login"> Accedi </Link>
-                        <Link to="/register"> Registrati </Link>
-                    </>
-                )}
+        <div className="navbar-links">
 
-                {token && (
-                    <>
-                        <Link to="/play"> Gioca </Link>
-                        <Link to="/games"> Le mie partite </Link>
-                        <Link to="/profile"> Profilo </Link>
+            <Link to="/"> Home </Link>
 
-                        {user && (
-                            <span>
-                                Ciao, {user.username}
-                            </span>
-                        )}
+            <Link to="/completed-games"> Partite concluse </Link>
 
-                        <button onClick={handleLogout}>
-                            Logout
-                        </button>
-                    </>
-                )}
-            </div>
-        </nav>
-    );
+            <Link to="/classification"> Classifica </Link>
+
+            {!token && (
+                <>
+                    <Link to="/login"> Accedi </Link>
+
+                    <Link to="/register"> Registrati </Link>
+                </>
+            )}
+
+            {token && (
+                <>
+                    <Link to="/play"> Gioca </Link>
+
+                    <Link to="/games"> Le mie partite </Link>
+
+                    <Link to="/profile"> Profilo </Link>
+
+                    {user && (
+                        <span>
+                            Ciao, {user.username}
+                        </span>
+                    )}
+
+                    <button onClick={handleLogout}> Logout </button>
+                </>
+            )}
+
+        </div>
+    </nav>
+);
 }
 
 export default Navbar;

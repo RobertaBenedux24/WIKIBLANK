@@ -132,7 +132,7 @@ function Game() {
     }
 
     return (
-        <div>
+        <div className="page">
 
             <h1>WIKIBLANK</h1>
 
@@ -146,7 +146,7 @@ function Game() {
 
             <h2>Articolo</h2>
 
-            <div>
+            <div className="game-text">
                 {game.masked_text}
             </div>
 
