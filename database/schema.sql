@@ -1,3 +1,4 @@
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -32,4 +33,39 @@ CREATE TABLE games (
         ON DELETE CASCADE
 );
 
-select * from games;
+SELECT * FROM games;
+
+SELECT
+    g.id AS game_id,
+    g.user_id,
+    u.username,
+    g.status,
+    g.started_at
+FROM games g
+JOIN users u ON g.user_id = u.id;
+
+SELECT
+    id,
+    user_id,
+    article_title,
+    status,
+    attempts,
+    guessed_words,
+    started_at
+FROM games;
+
+SELECT id, article_title
+FROM games;
+
+SELECT
+    id,
+    user_id,
+    article_title,
+    status,
+    attempts,
+    started_at,
+    finished_at
+FROM games
+ORDER BY id;
+
+SELECT * FROM users;
