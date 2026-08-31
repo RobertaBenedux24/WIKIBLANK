@@ -18,21 +18,22 @@ function Navbar() {
             <Link to="/">WIKIBLANK</Link>
 
             <div>
-                <Link to="/">Home</Link>
+                <Link to="/">Home </Link>
+                <Link to="/completed-games"> Partite concluse </Link>
+                <Link to="/classification"> Classifica </Link>
 
                 {!token && (
                     <>
-                        <Link to="/login">Accedi</Link>
-                        <Link to="/register">Registrati</Link>
+                        <Link to="/login"> Accedi </Link>
+                        <Link to="/register"> Registrati </Link>
                     </>
                 )}
 
                 {token && (
                     <>
-                        <Link to="/play">Gioca</Link>
-                        <Link to="/games">Le mie partite</Link>
-                        <Link to="/classification">Classifica</Link>
-                        <Link to="/profile">Profilo</Link>
+                        <Link to="/play"> Gioca </Link>
+                        <Link to="/games"> Le mie partite </Link>
+                        <Link to="/profile"> Profilo </Link>
 
                         {user && (
                             <span>

@@ -10,6 +10,7 @@ import Game from "./pages/Game";
 import Games from "./pages/Games";
 import Classification from "./pages/Classification";
 import Profile from "./pages/Profile";
+import CompletedGames from "./pages/CompletedGames";
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
 
                 <Route path="/profile" element={<Profile />} />
 
+                <Route path="/completed-games" element={<CompletedGames />} />
             </Routes>
         </>
     );
