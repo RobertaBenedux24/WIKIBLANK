@@ -1,36 +1,61 @@
+import { Link } from "react-router-dom";
+import hangmanGif from "../assets/hangman.gif";
+
 function Home() {
     return (
-        <div className="page">
+        <main className="home-page">
 
-            <div className="card">
-                <h1>WIKIBLANK</h1>
+            <section className="home-hero">
 
-                <p>
-                    Scopri le parole nascoste e prova a
-                    indovinare il titolo dell'articolo Wikipedia.
-                </p>
-            </div>
+                <div className="home-gif-container">
+                    <img
+                        src={hangmanGif}
+                        alt="Omino WIKIBLANK"
+                         className="home-gif"
+                />
 
-            <div className="card">
-                <h2>Come si gioca</h2>
+                <div className="gif-watermark-cover"></div>
+                 
+                </div>
 
-                <p>
-                    Avvia una partita e prova parole che
-                    potrebbero essere presenti nell'articolo.
-                </p>
-
-                <p>
-                    Ogni parola corretta viene rivelata in
-                    tutte le sue occorrenze.
+                <p className="home-label">
+                    IL GIOCO DEGLI ARTICOLI NASCOSTI
                 </p>
 
-                <p>
-                    Quando pensi di aver capito l'articolo,
-                    prova a indovinarne il titolo.
-                </p>
-            </div>
+                <h1>
+                    Scopri l'articolo.
+                    <br />
+                    Indovina il titolo.
+                </h1>
 
-        </div>
+                <p className="home-description">
+                    WIKIBLANK trasforma un articolo di Wikipedia in una sfida:
+                    <br />
+                    scopri le parole nascoste e prova a indovinare il titolo
+                    nel minor tempo possibile.
+                </p>
+
+                <div className="home-actions">
+
+                    <Link
+                        to="/play"
+                        className="home-primary-button"
+                    >
+                        Inizia a giocare
+                    </Link>
+
+                    <Link
+                        to="/completed-games"
+                        className="home-secondary-button"
+                    >
+                        Esplora le partite
+                    </Link>
+
+                </div>
+
+            </section>
+
+        </main>
     );
 }
 
