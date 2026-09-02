@@ -478,3 +478,169 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================
+   LOGIN
+   ========================= */
+
+.login-page {
+    height: calc(100vh - 70px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+
+    background-color: #ffffff;
+
+    overflow: hidden;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+
+    padding: 40px;
+
+    border: 1px solid #dddddd;
+    border-radius: 16px;
+
+    background-color: #ffffff;
+
+    text-align: center;
+}
+
+.login-label {
+    margin: 0 0 12px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 5px;
+
+    color: #777777;
+}
+
+.login-card h1 {
+    margin: 0;
+
+    font-size: 46px;
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+    color: #111111;
+}
+
+.login-description {
+    margin: 14px 0 30px;
+
+    font-size: 16px;
+    line-height: 1.5;
+
+    color: #666666;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+.login-field {
+    display: flex;
+    flex-direction: column;
+
+    text-align: left;
+}
+
+.login-field label {
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    color: #222222;
+}
+
+.login-field input {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+
+    font-size: 16px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.login-field input:focus {
+    border-color: #111111;
+}
+
+.login-button {
+    margin-top: 4px;
+
+    padding: 14px 24px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #111111;
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.login-button:hover {
+    background-color: #333333;
+
+    transform: translateY(-1px);
+}
+
+.login-error {
+    margin: 18px 0 0;
+
+    font-size: 14px;
+
+    color: #b00020;
+}
+
+.login-register {
+    margin: 25px 0 0;
+
+    font-size: 14px;
+
+    color: #666666;
+}
+
+.login-register button {
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    color: #111111;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.login-register button:hover {
+    text-decoration: underline;
+}

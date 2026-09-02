@@ -138,7 +138,9 @@ function Play() {
                         <div className="auth-warning-actions">
 
                             <button
-                                onClick={() => navigate("/login")}
+                                onClick={() => navigate("/login", {
+                                state: { startGameAfterLogin: true }
+                            })}
                             >
                                 Accedi
                             </button>

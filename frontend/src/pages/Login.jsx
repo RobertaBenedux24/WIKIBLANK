@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import api from "../services/api";
 
@@ -10,6 +10,7 @@ function Login() {
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -31,7 +32,15 @@ function Login() {
                 JSON.stringify(response.data.user)
             );
 
-            navigate("/");
+            if (location.state?.startGameAfterLogin) {
+                const gameResponse = await api.post("/games");
+
+                const gameId = gameResponse.data.game.id;
+
+                navigate(`/game/${gameId}`);
+            } else {
+                navigate("/");
+            }
 
         } catch (error) {
             setError(
@@ -42,47 +51,96 @@ function Login() {
     };
 
     return (
-        <div>
-            <h1>Accedi</h1>
+        <main className="login-page">
 
-            <form onSubmit={handleSubmit}>
+            <section className="login-card">
 
-                <div>
-                    <label>Email</label>
+                <p className="login-label">
+                    WIKIBLANK
+                </p>
 
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(event) =>
-                            setEmail(event.target.value)
-                        }
-                        required
-                    />
-                </div>
+                <h1>Accedi</h1>
 
-                <div>
-                    <label>Password</label>
+                <p className="login-description">
+                    Accedi al tuo account per iniziare a giocare.
+                </p>
 
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(event) =>
-                            setPassword(event.target.value)
-                        }
-                        required
-                    />
-                </div>
+                <form
+                    className="login-form"
+                    onSubmit={handleSubmit}
+                >
 
-                <button type="submit">
-                    Accedi
-                </button>
+                    <div className="login-field">
 
-            </form>
+                        <label htmlFor="email">
+                            Email
+                        </label>
 
-            {error && (
-                <p>{error}</p>
-            )}
-        </div>
+                        <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={(event) =>
+                                setEmail(event.target.value)
+                            }
+                            placeholder="nome@email.it"
+                            required
+                        />
+
+                    </div>
+
+
+                    <div className="login-field">
+
+                        <label htmlFor="password">
+                            Password
+                        </label>
+
+                        <input
+                            id="password"
+                            type="password"
+                            value={password}
+                            onChange={(event) =>
+                                setPassword(event.target.value)
+                            }
+                            placeholder="Inserisci la password"
+                            required
+                        />
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        className="login-button"
+                    >
+                        Accedi
+                    </button>
+
+                </form>
+
+
+                {error && (
+                    <p className="login-error">
+                        {error}
+                    </p>
+                )}
+
+
+                <p className="login-register">
+                    Non hai ancora un account?{" "}
+
+                    <button
+                        type="button"
+                        onClick={() => navigate("/register")}
+                    >
+                        Registrati
+                    </button>
+                </p>
+
+            </section>
+
+        </main>
     );
 }
 
