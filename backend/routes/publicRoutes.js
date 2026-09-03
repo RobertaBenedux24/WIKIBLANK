@@ -47,7 +47,8 @@ router.get("/completed-games", async (req, res) => {
         const games = result.rows.map(game => {
             const maskedText = maskText(
                 game.article_text,
-                game.guessed_words
+                game.guessed_words,
+                game.article_title
             );
 
             const durationSeconds = Math.floor(

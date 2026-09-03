@@ -131,97 +131,196 @@ function Game() {
         return <p>Partita non trovata</p>;
     }
 
+    const renderMaskedText = () => {
+
+        if (!game?.masked_text) {
+            return null;
+        }
+
+        const guessedWords = new Set(
+            (game.guessed_words || []).map(
+                word => word.toLowerCase()
+            )
+        );
+
+        const parts = game.masked_text.split(
+            /([\p{L}\p{M}]+)/gu
+        );
+
+        return parts.map((part, index) => {
+
+            if (
+                guessedWords.has(
+                    part.toLowerCase()
+                )
+            ) {
+                return (
+                    <span
+                        key={index}
+                        className="correct-word"
+                    >
+                        {part}
+                    </span>
+                );
+            }
+
+            return part;
+        });
+    };
+
     return (
-        <div className="page">
+        <main className="game-page">
 
-            <h1>WIKIBLANK</h1>
+            <section className="game-header">
 
-            <p>
-                Stato: {game.status}
-            </p>
+                <p className="game-label">
+                    WIKIBLANK
+                </p>
 
-            <p>
-                Tentativi: {game.attempts}
-            </p>
+                <div className="game-meta">
+                    <span>
+                        Stato: {game.status}
+                    </span>
 
-            <h2>Articolo</h2>
+                    <span>
+                        Tentativi: {game.attempts}
+                    </span>
+                </div>
 
-            <div className="game-text">
-                {game.masked_text}
-            </div>
+            </section>
+
+
+            <section className="game-article-section">
+
+                <h1>Articolo</h1>
+
+                <div className="game-text">
+                    {renderMaskedText
+                        ? renderMaskedText()
+                        : game.masked_text
+                    }
+                </div>
+
+            </section>
 
 
             {game.status === "in_progress" && (
-                <>
-                    <h2>Prova una parola</h2>
 
-                    <form onSubmit={handleWordGuess}>
-                        <input
-                            type="text"
-                            value={word}
-                            onChange={(event) =>
-                                setWord(event.target.value)
-                            }
-                            placeholder="Inserisci una parola"
-                            required
-                        />
+                <section className="game-controls">
 
-                        <button type="submit">
-                            Prova parola
-                        </button>
-                    </form>
+                    <div className="game-control-card">
+
+                        <h2>Prova una parola</h2>
+
+                        <p>
+                            Inserisci una parola che pensi sia presente
+                            nell'articolo.
+                        </p>
+
+                        <form
+                            className="game-form"
+                            onSubmit={handleWordGuess}
+                        >
+
+                            <input
+                                type="text"
+                                value={word}
+                                onChange={(event) =>
+                                    setWord(event.target.value)
+                                }
+                                placeholder="Inserisci una parola"
+                                required
+                            />
+
+                            <button type="submit">
+                                Prova parola
+                            </button>
+
+                        </form>
+
+                    </div>
 
 
-                    <h2>Prova il titolo</h2>
+                    <div className="game-control-card">
 
-                    <form onSubmit={handleTitleGuess}>
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(event) =>
-                                setTitle(event.target.value)
-                            }
-                            placeholder="Titolo dell'articolo"
-                            required
-                        />
+                        <h2>Indovina il titolo</h2>
 
-                        <button type="submit">
-                            Prova titolo
-                        </button>
-                    </form>
+                        <p>
+                            Quando pensi di aver capito l'articolo,
+                            prova a indovinarne il titolo.
+                        </p>
 
+                        <form
+                            className="game-form"
+                            onSubmit={handleTitleGuess}
+                        >
+
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(event) =>
+                                    setTitle(event.target.value)
+                                }
+                                placeholder="Titolo dell'articolo"
+                                required
+                            />
+
+                            <button type="submit">
+                                Prova titolo
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </section>
+            )}
+
+
+            {game.status === "in_progress" && (
+
+                <div className="game-abandon">
 
                     <button onClick={handleAbandon}>
                         Abbandona partita
                     </button>
-                </>
+
+                </div>
             )}
 
 
             {game.status !== "in_progress" && (
-                <div>
+
+                <section className="game-finished">
+
                     <h2>Partita terminata</h2>
 
                     <p>
-                        Titolo corretto: {game.article_title}
+                        Titolo corretto:
+                        <strong> {game.article_title}</strong>
                     </p>
 
                     <button onClick={() => navigate("/play")}>
                         Nuova partita
                     </button>
-                </div>
+
+                </section>
             )}
 
 
             {message && (
-                <p>{message}</p>
+                <p className="game-message">
+                    {message}
+                </p>
             )}
 
             {error && (
-                <p>{error}</p>
+                <p className="game-error">
+                    {error}
+                </p>
             )}
 
-        </div>
+        </main>
     );
 }
 

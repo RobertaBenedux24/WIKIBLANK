@@ -1,3 +1,61 @@
+function shortenText(text, maxLength = 1800) {
+    if (!text) {
+        return "";
+    }
+
+    if (text.length <= maxLength) {
+        return text;
+    }
+
+    const shortened = text.slice(0, maxLength);
+
+    const lastPeriod = shortened.lastIndexOf(".");
+    const lastExclamation = shortened.lastIndexOf("!");
+    const lastQuestion = shortened.lastIndexOf("?");
+
+    const lastSentenceEnd = Math.max(
+        lastPeriod,
+        lastExclamation,
+        lastQuestion
+    );
+
+    if (lastSentenceEnd !== -1) {
+        return shortened
+            .slice(0, lastSentenceEnd + 1)
+            .trim();
+    }
+
+    return shortened.trim() + "...";
+}
+
+function cleanWikipediaText(text) {
+    if (!text) {
+        return "";
+    }
+
+    const sectionsToRemove = [
+        "Note",
+        "Bibliografia",
+        "Voci correlate",
+        "Altri progetti",
+        "Collegamenti esterni",
+        "Fonti",
+        "Riferimenti"
+    ];
+
+    let cleanedText = text;
+
+    for (const section of sectionsToRemove) {
+        const sectionIndex = cleanedText.indexOf(`\n${section}\n`);
+
+        if (sectionIndex !== -1) {
+            cleanedText = cleanedText.slice(0, sectionIndex);
+        }
+    }
+
+    return cleanedText.trim();
+}
+
 async function getRandomArticle() {
     const randomUrl =
         "https://it.wikipedia.org/w/api.php" +
@@ -44,10 +102,13 @@ async function getRandomArticle() {
     const pages = contentData.query.pages;
     const page = Object.values(pages)[0];
 
+    const cleanedText = cleanWikipediaText(page.extract);
+
     return {
         title: page.title,
-        text: page.extract
+        text: shortenText(cleanedText, 1800)
     };
+
 }
 
 module.exports = getRandomArticle;

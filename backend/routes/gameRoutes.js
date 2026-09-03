@@ -97,7 +97,8 @@ router.get("/:id", authToken, async (req, res) => {
 
         const maskedText = maskText(
             game.article_text,
-            game.guessed_words
+            game.guessed_words,
+            game.article_title
         );
 
         const responseGame = {
@@ -105,6 +106,7 @@ router.get("/:id", authToken, async (req, res) => {
             status: game.status,
             attempts: game.attempts,
             guessed_words: game.guessed_words,
+            wrong_guesses: game.wrong_guesses || [],
             started_at: game.started_at,
             finished_at: game.finished_at,
             masked_text: maskedText
@@ -181,29 +183,53 @@ router.post("/:id/guess", authToken, async (req, res) => {
             articleWord => articleWord.toLowerCase() === normalizedWord
         );
 
-        let updatedGuessedWords = game.guessed_words;
+        /*DEBUG*/
+        console.log("Parola inserita:", normalizedWord);
+        console.log("Parola presente:", wordExists);
+        console.log("Guessed prima:", game.guessed_words);
+
+        let updatedGuessedWords = game.guessed_words || [];
+        let updatedWrongGuesses = game.wrong_guesses || [];
 
         if (wordExists) {
+
             updatedGuessedWords = [
-                ...game.guessed_words,
+                ...updatedGuessedWords,
                 normalizedWord
             ];
-        }
 
+        } else {
+
+            if (!updatedWrongGuesses.includes(normalizedWord)) {
+                updatedWrongGuesses = [
+                    ...updatedWrongGuesses,
+                    normalizedWord
+                ];
+            }
+
+        }
         const updateResult = await pool.query(
             `UPDATE games
-             SET guessed_words = $1,
-                 attempts = attempts + 1
-             WHERE id = $2
-             RETURNING *`,
-            [updatedGuessedWords, gameId]
+            SET guessed_words = $1,
+                wrong_guesses = $2,
+                attempts = attempts + 1
+            WHERE id = $3
+            RETURNING *`,
+            [
+                updatedGuessedWords,
+                updatedWrongGuesses,
+                gameId
+            ]
         );
 
         const updatedGame = updateResult.rows[0];
+        /* DEBUG */
+        console.log("Guessed dopo:", updatedGame.guessed_words);
 
         const maskedText = maskText(
             updatedGame.article_text,
-            updatedGame.guessed_words
+            updatedGame.guessed_words,
+            updatedGame.article_title
         );
 
         res.status(200).json({
@@ -213,6 +239,7 @@ router.post("/:id/guess", authToken, async (req, res) => {
                 : "Parola non presente nell'articolo",
             attempts: updatedGame.attempts,
             guessed_words: updatedGame.guessed_words,
+            wrong_guesses: updatedGame.wrong_guesses,
             masked_text: maskedText
         });
 
