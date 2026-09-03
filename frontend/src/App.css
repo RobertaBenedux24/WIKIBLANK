@@ -1,3 +1,6 @@
+/* =========================
+   NAVBAR
+   ========================= */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -29,6 +32,9 @@
     cursor: pointer;
 }
 
+/* =========================
+   ELEMENTI COMUNI
+   ========================= */
 .page {
     max-width: 1000px;
     margin: 0 auto;
@@ -82,9 +88,7 @@
 .game-text {
     width: 100%;
     max-width: 780px;
-
     margin: 0 auto;
-
     padding: 18px 22px;
 
     font-size: 13px;
@@ -101,15 +105,15 @@
     word-break: normal;
 }
 
-/*HOME*/
+/* =========================
+   HOME PAGE
+   ========================= */
 .home-page {
     height: calc(100vh - 70px);
     background-color: #ffffff;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     overflow: hidden;
 }
 
@@ -117,9 +121,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
     text-align: center;
-
     padding: 20px;
 }
 
@@ -127,22 +129,17 @@
 
 .home-gif-container {
     position: relative;
-
     width: 355px;
     height: 200px;
-
     margin: 0 auto 10px;
-
     overflow: hidden;
     background-color: white;
 }
 
 .home-gif {
     display: block;
-
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 }
 
@@ -150,91 +147,64 @@
 
 .gif-watermark-cover {
     position: absolute;
-
     left: 0;
     bottom: 0;
-
     width: 95px;
     height: 35px;
-
     background-color: white;
 }
-
 
 /* SCRITTA SOPRA IL TITOLO */
 
 .home-label {
     margin: 0 0 25px;
-
     font-size: 20px;
     font-weight: 700;
-
     letter-spacing: 7px;
-
     color: #333333;
 }
-
 
 /* TITOLO */
 
 .home-hero h1 {
     margin: 0;
-
     font-size: 68px;
     line-height: 1.05;
-
     font-weight: 800;
-
     letter-spacing: -2px;
-
     color: #111111;
 }
-
 
 /* DESCRIZIONE */
 
 .home-description {
     margin: 25px auto 25px;
-
     max-width: 850px;
-
     font-size: 19px;
     line-height: 1.6;
-
     color: #555555;
 }
-
 
 /* PULSANTI */
 
 .home-actions {
     display: flex;
-
     justify-content: center;
-
     gap: 18px;
 }
-
 
 .home-primary-button,
 .home-secondary-button {
     display: inline-flex;
-
     align-items: center;
     justify-content: center;
-
     min-width: 190px;
-
     padding: 15px 25px;
-
     border-radius: 9px;
-
     font-size: 17px;
     font-weight: 700;
-
     transition: 0.2s;
 }
-
 
 /* PULSANTE NERO */
 
@@ -249,13 +219,11 @@
     transform: translateY(-2px);
 }
 
-
 /* PULSANTE BIANCO */
 
 .home-secondary-button {
     background-color: #ffffff;
     color: #111111;
-
     border: 1px solid #cccccc;
 }
 
@@ -270,15 +238,11 @@
 
 .play-page {
     min-height: calc(100vh - 70px);
-
     background-color: #ffffff;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-
     padding: 35px 30px;
-
     overflow: hidden;
 }
 
@@ -290,34 +254,25 @@
 
 .play-label {
     margin: 0 0 12px;
-
     font-size: 14px;
     font-weight: 700;
-
     letter-spacing: 5px;
-
     color: #777777;
 }
 
 .play-header h1 {
     margin: 0;
-
     font-size: 52px;
     font-weight: 800;
-
     letter-spacing: -1px;
-
     color: #111111;
 }
 
 .play-description {
     max-width: 650px;
-
     margin: 25px auto 0;
-
     font-size: 18px;
     line-height: 1.6;
-
     color: #666666;
 }
 
@@ -326,60 +281,45 @@
 .play-steps {
     width: 100%;
     max-width: 1050px;
-
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 22px;
-
     margin-top: 35px;
 }
 
 .play-step {
     min-height: 180px;
-
     padding: 24px;
-
     border: 1px solid #dddddd;
     border-radius: 15px;
-
     background-color: #ffffff;
-
     transition: 0.2s ease;
 }
 
 .play-step:hover {
     transform: translateY(-5px);
-
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
 }
 
 .play-number {
     display: block;
-
     margin-bottom: 18px;
-
     font-size: 14px;
     font-weight: 800;
-
     letter-spacing: 2px;
-
     color: #777777;
 }
 
 .play-step h2 {
     margin: 0 0 12px;
-
     font-size: 22px;
-
     color: #111111;
 }
 
 .play-step p {
     margin: 0;
-
     font-size: 16px;
     line-height: 1.6;
-
     color: #666666;
 }
 
@@ -398,18 +338,13 @@
 .play-start-button {
     min-width: 220px;
     padding: 16px 30px;
-
     border: none;
     border-radius: 9px;
-
     background-color: #111111;
     color: #ffffff;
-
     font-size: 17px;
     font-weight: 700;
-
     cursor: pointer;
-
     transition: 0.2s ease;
 }
 
@@ -425,19 +360,15 @@
 
 .play-error {
     margin-top: 15px;
-
     color: #b00020;
 }
 
 .auth-warning {
     margin-top: 15px;
     padding: 15px 22px;
-
     border: 1px solid #dddddd;
     border-radius: 12px;
-
     background-color: #ffffff;
-
     text-align: center;
 }
 
@@ -454,12 +385,9 @@
 
 .auth-warning-actions button {
     padding: 10px 20px;
-
     border-radius: 8px;
     border: 1px solid #111111;
-
     cursor: pointer;
-
     font-weight: 700;
 }
 
@@ -472,7 +400,6 @@
     background: white;
     color: #111111;
 }
-
 
 /* MOBILE */
 
@@ -497,100 +424,74 @@
 
 .login-page {
     height: calc(100vh - 70px);
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 30px;
-
     background-color: #ffffff;
-
     overflow: hidden;
 }
 
 .login-card {
     width: 100%;
     max-width: 460px;
-
     padding: 40px;
-
     border: 1px solid #dddddd;
     border-radius: 16px;
-
     background-color: #ffffff;
-
     text-align: center;
 }
 
 .login-label {
     margin: 0 0 12px;
-
     font-size: 13px;
     font-weight: 700;
-
     letter-spacing: 5px;
-
     color: #777777;
 }
 
 .login-card h1 {
     margin: 0;
-
     font-size: 46px;
     font-weight: 800;
-
     letter-spacing: -1px;
-
     color: #111111;
 }
 
 .login-description {
     margin: 14px 0 30px;
-
     font-size: 16px;
     line-height: 1.5;
-
     color: #666666;
 }
 
 .login-form {
     display: flex;
     flex-direction: column;
-
     gap: 20px;
 }
 
 .login-field {
     display: flex;
     flex-direction: column;
-
     text-align: left;
 }
 
 .login-field label {
     margin-bottom: 8px;
-
     font-size: 14px;
     font-weight: 700;
-
     color: #222222;
 }
 
 .login-field input {
     width: 100%;
-
     padding: 13px 14px;
-
     border: 1px solid #cccccc;
     border-radius: 8px;
-
     background-color: #ffffff;
-
     font-size: 16px;
-
     outline: none;
-
     transition: 0.2s ease;
 }
 
@@ -600,56 +501,40 @@
 
 .login-button {
     margin-top: 4px;
-
     padding: 14px 24px;
-
     border: none;
     border-radius: 8px;
-
-    background-color: #111111;
+    bacKground-color: #111111;
     color: #ffffff;
-
     font-size: 16px;
     font-weight: 700;
-
     cursor: pointer;
-
     transition: 0.2s ease;
 }
 
 .login-button:hover {
     background-color: #333333;
-
     transform: translateY(-1px);
 }
 
 .login-error {
     margin: 18px 0 0;
-
     font-size: 14px;
-
     color: #b00020;
 }
 
 .login-register {
     margin: 25px 0 0;
-
     font-size: 14px;
-
     color: #666666;
 }
 
 .login-register button {
     padding: 0;
-
     border: none;
-
     background: none;
-
     color: #111111;
-
     font-weight: 700;
-
     cursor: pointer;
 }
 
@@ -663,100 +548,74 @@
 
 .register-page {
     height: calc(100vh - 70px);
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 25px;
-
     background-color: #ffffff;
-
     overflow: hidden;
 }
 
 .register-card {
     width: 100%;
     max-width: 460px;
-
     padding: 35px 40px;
-
     border: 1px solid #dddddd;
     border-radius: 16px;
-
     background-color: #ffffff;
-
     text-align: center;
 }
 
 .register-label {
     margin: 0 0 10px;
-
     font-size: 13px;
     font-weight: 700;
-
     letter-spacing: 5px;
-
     color: #777777;
 }
 
 .register-card h1 {
     margin: 0;
-
     font-size: 46px;
     font-weight: 800;
-
     letter-spacing: -1px;
-
     color: #111111;
 }
 
 .register-description {
     margin: 14px 0 25px;
-
     font-size: 16px;
     line-height: 1.5;
-
     color: #666666;
 }
 
 .register-form {
     display: flex;
     flex-direction: column;
-
     gap: 17px;
 }
 
 .register-field {
     display: flex;
     flex-direction: column;
-
     text-align: left;
 }
 
 .register-field label {
     margin-bottom: 7px;
-
     font-size: 14px;
     font-weight: 700;
-
     color: #222222;
 }
 
 .register-field input {
     width: 100%;
-
     padding: 13px 14px;
-
     border: 1px solid #cccccc;
     border-radius: 8px;
-
     background-color: #ffffff;
-
     font-size: 16px;
-
     outline: none;
-
     transition: 0.2s ease;
 }
 
@@ -766,20 +625,14 @@
 
 .register-button {
     margin-top: 3px;
-
     padding: 14px 24px;
-
     border: none;
     border-radius: 8px;
-
     background-color: #111111;
     color: #ffffff;
-
     font-size: 16px;
     font-weight: 700;
-
     cursor: pointer;
-
     transition: 0.2s ease;
 }
 
@@ -790,69 +643,57 @@
 
 .register-success {
     margin: 17px 0 0;
-
     font-size: 14px;
-
     color: #2d7a46;
 }
 
 .register-error {
     margin: 17px 0 0;
-
     font-size: 14px;
-
     color: #b00020;
 }
 
 .register-login {
     margin: 22px 0 0;
-
     font-size: 14px;
-
     color: #666666;
 }
 
 .register-login button {
     padding: 0;
-
     border: none;
-
     background: none;
-
     color: #111111;
-
     font-weight: 700;
-
     cursor: pointer;
 }
 
 .register-login button:hover {
     text-decoration: underline;
 }
- /*PLAY*/
 
- .page {
+/* =========================
+   GAME PAGE
+   ========================= */
+
+ /*.page {
     width: 100%;
     max-width: 900px;
-
     margin: 0 auto;
-
     padding: 22px 24px 40px;
 }
 
 .page h2 {
     margin: 14px 0 10px;
-
     font-size: 18px;
     font-weight: 800;
 }
 
 .page > p {
     margin: 4px 0;
-
     font-size: 13px;
     color: #666666;
-}
+} */
 
 .correct-word {
     color: #d60000;
@@ -865,48 +706,33 @@
 
 .wrong-guesses h3 {
     margin: 0 0 12px;
-
     font-size: 16px;
     font-weight: 700;
-
     color: #111111;
 }
 
 .wrong-guesses-list {
     display: flex;
     flex-wrap: wrap;
-
     gap: 8px;
 }
 
 .wrong-word {
     padding: 7px 12px;
-
     border: 1px solid #dddddd;
     border-radius: 7px;
-
     background-color: #f7f7f7;
-
     color: #666666;
-
     font-size: 14px;
 }
-
-/* =========================
-   GAME PAGE
-   ========================= */
 
 .game-page {
     width: 100%;
     max-width: 920px;
-
     margin: 0 auto;
-
     padding: 22px 24px 45px;
-
     background-color: #ffffff;
 }
-
 
 /* TESTATA */
 
@@ -916,23 +742,18 @@
 
 .game-label {
     margin: 0 0 8px;
-
     font-size: 13px;
     font-weight: 700;
-
     letter-spacing: 4px;
-
     color: #777777;
 }
 
 .game-meta {
     display: flex;
     gap: 18px;
-
     font-size: 13px;
     color: #666666;
 }
-
 
 /* ARTICOLO */
 
@@ -943,13 +764,10 @@
 
 .game-text {
     padding: 20px 24px;
-
     font-size: 14px;
     line-height: 1.65;
-
     border: 1px solid #e4e4e4;
     border-radius: 12px;
-
     box-shadow: none;
 }
 
@@ -959,7 +777,6 @@
     color: #d00000;
     font-weight: 700;
 }
-
 
 /* CONTROLLI */
 
@@ -987,7 +804,6 @@
     color: #777;
 }
 
-
 /* FORM */
 
 .game-form {
@@ -998,26 +814,19 @@
 
 .game-form input {
     flex: 1;
-
     padding: 12px 14px;
-
     border: 1px solid #d5d5d5;
     border-radius: 8px;
-
     font-size: 14px;
 }
 
 .game-form button {
     min-width: 130px;
-
     padding: 12px 18px;
-
     border: none;
     border-radius: 8px;
-
     background: #111;
     color: white;
-
     font-weight: 700;
     cursor: pointer;
 }
@@ -1026,22 +835,17 @@
 
 .game-abandon {
     margin-top: 18px;
-
     text-align: right;
 }
 
 .game-abandon button {
     padding: 9px 14px;
-
     border: 1px solid #cccccc;
     border-radius: 8px;
-
     background-color: #ffffff;
     color: #666666;
-
     font-size: 13px;
     font-weight: 600;
-
     cursor: pointer;
 }
 
@@ -1050,37 +854,28 @@
     color: #111111;
 }
 
-
 /* MESSAGGI */
 
 .game-message {
     margin-top: 16px;
-
     font-size: 14px;
     font-weight: 600;
-
     color: #333333;
 }
 
 .game-error {
     margin-top: 16px;
-
     font-size: 14px;
-
     color: #b00020;
 }
-
 
 /* PARTITA FINITA */
 
 .game-finished {
     margin-top: 22px;
-
     padding: 22px;
-
     border: 1px solid #dddddd;
     border-radius: 12px;
-
     text-align: center;
 }
 
@@ -1090,20 +885,14 @@
 
 .game-finished button {
     margin-top: 10px;
-
     padding: 11px 20px;
-
     border: none;
     border-radius: 8px;
-
     background-color: #111111;
     color: #ffffff;
-
     font-weight: 700;
-
     cursor: pointer;
 }
-
 
 /* MOBILE */
 
