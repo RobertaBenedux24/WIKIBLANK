@@ -33,11 +33,7 @@ function Login() {
             );
 
             if (location.state?.startGameAfterLogin) {
-                const gameResponse = await api.post("/games");
-
-                const gameId = gameResponse.data.game.id;
-
-                navigate(`/game/${gameId}`);
+                navigate("/play");
             } else {
                 navigate("/");
             }
