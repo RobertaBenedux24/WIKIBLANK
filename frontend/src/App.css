@@ -644,3 +644,176 @@
 .login-register button:hover {
     text-decoration: underline;
 }
+
+/* =========================
+   REGISTER
+   ========================= */
+
+.register-page {
+    height: calc(100vh - 70px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 25px;
+
+    background-color: #ffffff;
+
+    overflow: hidden;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 460px;
+
+    padding: 35px 40px;
+
+    border: 1px solid #dddddd;
+    border-radius: 16px;
+
+    background-color: #ffffff;
+
+    text-align: center;
+}
+
+.register-label {
+    margin: 0 0 10px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 5px;
+
+    color: #777777;
+}
+
+.register-card h1 {
+    margin: 0;
+
+    font-size: 46px;
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+    color: #111111;
+}
+
+.register-description {
+    margin: 14px 0 25px;
+
+    font-size: 16px;
+    line-height: 1.5;
+
+    color: #666666;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 17px;
+}
+
+.register-field {
+    display: flex;
+    flex-direction: column;
+
+    text-align: left;
+}
+
+.register-field label {
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    color: #222222;
+}
+
+.register-field input {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+
+    font-size: 16px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.register-field input:focus {
+    border-color: #111111;
+}
+
+.register-button {
+    margin-top: 3px;
+
+    padding: 14px 24px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #111111;
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.register-button:hover {
+    background-color: #333333;
+    transform: translateY(-1px);
+}
+
+.register-success {
+    margin: 17px 0 0;
+
+    font-size: 14px;
+
+    color: #2d7a46;
+}
+
+.register-error {
+    margin: 17px 0 0;
+
+    font-size: 14px;
+
+    color: #b00020;
+}
+
+.register-login {
+    margin: 22px 0 0;
+
+    font-size: 14px;
+
+    color: #666666;
+}
+
+.register-login button {
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    color: #111111;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.register-login button:hover {
+    text-decoration: underline;
+}

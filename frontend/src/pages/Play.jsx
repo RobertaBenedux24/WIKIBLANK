@@ -146,7 +146,13 @@ function Play() {
                             </button>
 
                             <button
-                                onClick={() => navigate("/register")}
+                                onClick={() =>
+                                    navigate("/register", {
+                                        state: {
+                                            startGameAfterRegister: true
+                                        }
+                                    })
+                                }
                             >
                                 Registrati
                             </button>
