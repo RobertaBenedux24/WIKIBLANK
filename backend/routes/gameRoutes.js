@@ -3,7 +3,10 @@ const express = require("express");
 const pool = require("../db");
 const authToken = require("../middleware/auth");
 const getRandomArticle = require("../services/wikipedia");
-const maskText = require("../utils/secretText");
+const {
+    maskText,
+    getVisibleHintWords
+} = require("../utils/secretText");
 const normalizeText = require("../utils/normalizeText");
 
 const router = express.Router();
@@ -95,11 +98,17 @@ router.get("/:id", authToken, async (req, res) => {
 
         const game = result.rows[0];
 
-        const maskedText = maskText(
-            game.article_text,
-            game.guessed_words,
-            game.article_title
-        );
+        let maskedText;
+
+        if (game.status === "won") {
+            maskedText = game.article_text;
+        } else {
+            maskedText = maskText(
+                game.article_text,
+                game.guessed_words,
+                game.article_title
+            );
+        }
 
         const responseGame = {
             id: game.id,
@@ -165,6 +174,17 @@ router.post("/:id/guess", authToken, async (req, res) => {
 
         const normalizedWord = word.trim().toLowerCase();
 
+        const visibleHintWords = getVisibleHintWords(
+            game.article_text,
+            game.article_title
+        );
+
+        if (visibleHintWords.has(normalizedWord)) {
+            return res.status(400).json({
+                message: "Questa parola è già visibile nell'articolo"
+            });
+        }
+        
         const alreadyGuessed = game.guessed_words.some(
             guessedWord => guessedWord.toLowerCase() === normalizedWord
         );

@@ -2,7 +2,7 @@ const express = require("express");
 
 const pool = require("../db");
 const getRandomArticle = require("../services/wikipedia");
-const maskText = require("../utils/secretText");
+const { maskText } = require("../utils/secretText");
 
 const router = express.Router();
 

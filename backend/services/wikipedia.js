@@ -28,6 +28,7 @@ function shortenText(text, maxLength = 1800) {
     return shortened.trim() + "...";
 }
 
+
 function cleanWikipediaText(text) {
     if (!text) {
         return "";
@@ -40,7 +41,10 @@ function cleanWikipediaText(text) {
         "Altri progetti",
         "Collegamenti esterni",
         "Fonti",
-        "Riferimenti"
+        "Riferimenti",
+        "Collegamenti",
+        "Galleria",
+        "Voci correlate e altri progetti"
     ];
 
     let cleanedText = text;
@@ -55,6 +59,95 @@ function cleanWikipediaText(text) {
 
     return cleanedText.trim();
 }
+
+
+function removeUselessLines(text) {
+    if (!text) {
+        return "";
+    }
+
+    const lines = text.split("\n");
+
+    const cleanedLines = [];
+
+    for (const line of lines) {
+        const trimmed = line.trim();
+
+        // manteniamo le righe vuote per separare i paragrafi
+        if (!trimmed) {
+            cleanedLines.push("");
+            continue;
+        }
+
+        const wordCount = trimmed.split(/\s+/).length;
+
+        const hasSentencePunctuation =
+            /[.!?]$/.test(trimmed);
+
+        /*
+            Elimina intestazioni isolate tipo:
+
+            Uomini
+            Donne
+            Geografia
+            Storia
+            Carriera
+            Premi
+
+            Sono generalmente righe corte senza punteggiatura.
+        */
+        if (
+            trimmed.length <= 35 &&
+            wordCount <= 5 &&
+            !hasSentencePunctuation
+        ) {
+            continue;
+        }
+
+        /*
+            Elimina frammenti estremamente corti
+            che non hanno abbastanza contenuto per il gioco.
+        */
+        if (
+            trimmed.length < 45 &&
+            wordCount < 8 &&
+            !hasSentencePunctuation
+        ) {
+            continue;
+        }
+
+        cleanedLines.push(trimmed);
+    }
+
+    return cleanedLines.join("\n");
+}
+
+
+function removeShortParagraphs(text) {
+    if (!text) {
+        return "";
+    }
+
+    const paragraphs = text
+        .split(/\n\s*\n/)
+        .map(paragraph => paragraph.trim())
+        .filter(Boolean);
+
+    const usefulParagraphs = paragraphs.filter(paragraph => {
+
+        const words = paragraph.split(/\s+/);
+
+        /*
+            Se un paragrafo ha meno di 12 parole,
+            probabilmente è troppo piccolo per essere utile
+            nel gioco.
+        */
+        return words.length >= 12;
+    });
+
+    return usefulParagraphs.join("\n\n");
+}
+
 
 async function getRandomArticle() {
     const randomUrl =
@@ -72,7 +165,9 @@ async function getRandomArticle() {
     const randomResponse = await fetch(randomUrl);
 
     if (!randomResponse.ok) {
-        throw new Error("Errore nel recupero dell'articolo casuale");
+        throw new Error(
+            "Errore nel recupero dell'articolo casuale"
+        );
     }
 
     const randomData = await randomResponse.json();
@@ -80,6 +175,7 @@ async function getRandomArticle() {
     const randomPage = randomData.query.random[0];
 
     const title = randomPage.title;
+
 
     const contentUrl =
         "https://it.wikipedia.org/w/api.php" +
@@ -94,7 +190,9 @@ async function getRandomArticle() {
     const contentResponse = await fetch(contentUrl);
 
     if (!contentResponse.ok) {
-        throw new Error("Errore nel recupero del contenuto dell'articolo");
+        throw new Error(
+            "Errore nel recupero del contenuto dell'articolo"
+        );
     }
 
     const contentData = await contentResponse.json();
@@ -102,13 +200,27 @@ async function getRandomArticle() {
     const pages = contentData.query.pages;
     const page = Object.values(pages)[0];
 
-    const cleanedText = cleanWikipediaText(page.extract);
+
+    let cleanedText = page.extract;
+
+    // 1. Elimina sezioni finali inutili
+    cleanedText = cleanWikipediaText(cleanedText);
+
+    // 2. Elimina intestazioni e righe inutili
+    cleanedText = removeUselessLines(cleanedText);
+
+    // 3. Elimina paragrafi troppo piccoli
+    cleanedText = removeShortParagraphs(cleanedText);
+
+    // 4. Accorcia il testo finale
+    cleanedText = shortenText(cleanedText, 1800);
+
 
     return {
         title: page.title,
-        text: shortenText(cleanedText, 1800)
+        text: cleanedText
     };
-
 }
+
 
 module.exports = getRandomArticle;

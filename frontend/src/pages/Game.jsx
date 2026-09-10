@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 
+import winGif from "../assets/win.gif";
+
 function Game() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -55,6 +57,7 @@ function Game() {
                 ...previousGame,
                 attempts: response.data.attempts,
                 guessed_words: response.data.guessed_words,
+                wrong_guesses: response.data.wrong_guesses,
                 masked_text: response.data.masked_text
             }));
 
@@ -171,148 +174,225 @@ function Game() {
     return (
         <main className="game-page">
 
-            <section className="game-header">
-
-                <p className="game-label">
-                    WIKIBLANK
-                </p>
-
-                <div className="game-meta">
-                    <span>
-                        Stato: {game.status}
-                    </span>
-
-                    <span>
-                        Tentativi: {game.attempts}
-                    </span>
-                </div>
-
-            </section>
-
-
-            <section className="game-article-section">
-
-                <h1>Articolo</h1>
-
-                <div className="game-text">
-                    {renderMaskedText
-                        ? renderMaskedText()
-                        : game.masked_text
-                    }
-                </div>
-
-            </section>
-
+            {/* =========================
+                PARTITA IN CORSO
+            ========================= */}
 
             {game.status === "in_progress" && (
+                <>
+                    <section className="game-header">
 
-                <section className="game-controls">
+                        <div className="game-header-text">
 
-                    <div className="game-control-card">
+                            <p className="game-status-label">
+                                • PARTITA IN CORSO
+                            </p>
 
-                        <h2>Prova una parola</h2>
+                            <h1>
+                                Indovina l'articolo
+                            </h1>
 
-                        <p>
-                            Inserisci una parola che pensi sia presente
-                            nell'articolo.
-                        </p>
+                            <p className="game-description">
+                                Scopri le parole nascoste e prova a trovare il titolo.
+                            </p>
 
-                        <form
-                            className="game-form"
-                            onSubmit={handleWordGuess}
-                        >
+                        </div>
 
-                            <input
-                                type="text"
-                                value={word}
-                                onChange={(event) =>
-                                    setWord(event.target.value)
-                                }
-                                placeholder="Inserisci una parola"
-                                required
-                            />
+                        <div className="attempts-box">
+                            <span>TENTATIVI</span>
+                            <strong>{game.attempts}</strong>
+                        </div>
 
-                            <button type="submit">
-                                Prova parola
+                    </section>
+
+
+                    <section className="game-article-section">
+
+                        <div className="game-text">
+                            {renderMaskedText()}
+                        </div>
+
+                    </section>
+
+
+                    <section className="game-interaction-layout">
+
+                        {/* TROVA UNA PAROLA */}
+
+                        <div className="game-word-panel">
+
+                            <p className="panel-label">
+                                TROVA UNA PAROLA
+                            </p>
+
+                            <h2>Scopri nuovi indizi</h2>
+
+                            <p className="panel-description">
+                                Inserisci una parola che pensi possa
+                                essere presente nell'articolo.
+                            </p>
+
+                            <form
+                                className="game-word-form"
+                                onSubmit={handleWordGuess}
+                            >
+                                <input
+                                    type="text"
+                                    value={word}
+                                    onChange={(event) =>
+                                        setWord(event.target.value)
+                                    }
+                                    placeholder="Inserisci una parola"
+                                    required
+                                />
+
+                                <button type="submit">
+                                    Prova parola
+                                </button>
+                            </form>
+
+
+                            {message && (
+                                <p className="word-feedback">
+                                    {message}
+                                </p>
+                            )}
+
+
+                            {game.wrong_guesses &&
+                                game.wrong_guesses.length > 0 && (
+
+                                <div className="wrong-guesses">
+
+                                    <p className="wrong-guesses-title">
+                                        Parole già provate
+                                    </p>
+
+                                    <div className="wrong-guesses-list">
+
+                                        {game.wrong_guesses.map(
+                                            (wrongWord, index) => (
+                                                <span
+                                                    key={index}
+                                                    className="wrong-word"
+                                                >
+                                                    {wrongWord}
+                                                </span>
+                                            )
+                                        )}
+
+                                    </div>
+
+                                </div>
+                            )}
+
+                        </div>
+
+
+                        {/* INDOVINA IL TITOLO */}
+
+                        <aside className="game-title-panel">
+
+                            <p className="panel-label">
+                                SOLUZIONE
+                            </p>
+
+                            <h2>Indovina il titolo</h2>
+
+                            <p className="panel-description">
+                                Hai capito di quale articolo si tratta?
+                            </p>
+
+                            <form
+                                className="game-title-form"
+                                onSubmit={handleTitleGuess}
+                            >
+                                <input
+                                    type="text"
+                                    value={title}
+                                    onChange={(event) =>
+                                        setTitle(event.target.value)
+                                    }
+                                    placeholder="Titolo dell'articolo"
+                                    required
+                                />
+
+                                <button type="submit">
+                                    Prova titolo
+                                </button>
+                            </form>
+
+                            <button
+                                className="game-abandon-button"
+                                onClick={handleAbandon}
+                            >
+                                Abbandona partita
                             </button>
 
-                        </form>
+                        </aside>
 
-                    </div>
-
-
-                    <div className="game-control-card">
-
-                        <h2>Indovina il titolo</h2>
-
-                        <p>
-                            Quando pensi di aver capito l'articolo,
-                            prova a indovinarne il titolo.
-                        </p>
-
-                        <form
-                            className="game-form"
-                            onSubmit={handleTitleGuess}
-                        >
-
-                            <input
-                                type="text"
-                                value={title}
-                                onChange={(event) =>
-                                    setTitle(event.target.value)
-                                }
-                                placeholder="Titolo dell'articolo"
-                                required
-                            />
-
-                            <button type="submit">
-                                Prova titolo
-                            </button>
-
-                        </form>
-
-                    </div>
-
-                </section>
+                    </section>
+                </>
             )}
 
 
-            {game.status === "in_progress" && (
+            {/* =========================
+                PARTITA VINTA
+            ========================= */}
 
-                <div className="game-abandon">
+            {game.status === "won" && (
+                <section className="game-win-screen">
 
-                    <button onClick={handleAbandon}>
-                        Abbandona partita
-                    </button>
+                    <img
+                        src={winGif}
+                        alt="Vittoria"
+                        className="game-win-gif"
+                    />
 
-                </div>
-            )}
-
-
-            {game.status !== "in_progress" && (
-
-                <section className="game-finished">
-
-                    <h2>Partita terminata</h2>
-
-                    <p>
-                        Titolo corretto:
-                        <strong> {game.article_title}</strong>
+                    <p className="game-win-label">
+                        TITOLO INDOVINATO
                     </p>
 
-                    <button onClick={() => navigate("/play")}>
-                        Nuova partita
-                    </button>
+                    <h1 className="game-win-title">
+                        {game.article_title}
+                    </h1>
+
+
+                    <div className="game-win-article">
+                        {game.masked_text}
+                    </div>
+
+
+                    <div className="game-win-result">
+
+                        <p className="game-win-result-label">
+                            PARTITA TERMINATA
+                        </p>
+
+                        <h2>
+                            Hai indovinato!
+                        </h2>
+
+                        <p>
+                            Soluzione trovata in{" "}
+                            <strong>
+                                {game.attempts} tentativi
+                            </strong>.
+                        </p>
+
+                        <button
+                            onClick={() => navigate("/play")}
+                        >
+                            Nuova partita
+                        </button>
+
+                    </div>
 
                 </section>
             )}
 
 
-            {message && (
-                <p className="game-message">
-                    {message}
-                </p>
-            )}
+            {/* ERRORE */}
 
             {error && (
                 <p className="game-error">
