@@ -68,10 +68,12 @@ SELECT
 FROM games
 ORDER BY id;
 
+DELETE FROM users WHERE username = 'giulio';
 SELECT * FROM users;
 
 ALTER TABLE games
 ADD COLUMN wrong_guesses TEXT[] DEFAULT '{}';
 
+SELECT * FROM games;
 SELECT id, guessed_words, wrong_guesses
 FROM games;
