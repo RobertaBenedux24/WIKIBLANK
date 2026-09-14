@@ -14,7 +14,7 @@ function Games() {
         const loadGames = async () => {
             try {
                 const response = await api.get("/games");
-
+                console.log("PARTITE RICEVUTE:", response.data.games);
                 setGames(response.data.games);
 
             } catch (error) {
@@ -140,7 +140,7 @@ function Games() {
                                         <h2>
                                             {game.status === "in_progress"
                                                 ? "Articolo nascosto"
-                                                : "Partita conclusa"
+                                                : game.article_title
                                             }
                                         </h2>
                                     </div>

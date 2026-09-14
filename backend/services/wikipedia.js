@@ -169,6 +169,21 @@ async function getRandomArticle() {
             "Errore nel recupero dell'articolo casuale"
         );
     }
+/*DEBUG
+const randomResponse = await fetch(randomUrl);
+
+if (!randomResponse.ok) {
+    const errorText = await randomResponse.text();
+
+    console.error("ERRORE WIKIPEDIA RANDOM");
+    console.error("Status:", randomResponse.status);
+    console.error("Status text:", randomResponse.statusText);
+    console.error("Risposta:", errorText);
+
+    throw new Error(
+        `Errore Wikipedia: ${randomResponse.status} ${randomResponse.statusText}`
+    );
+}*/
 
     const randomData = await randomResponse.json();
 
@@ -194,6 +209,21 @@ async function getRandomArticle() {
             "Errore nel recupero del contenuto dell'articolo"
         );
     }
+/*DEBUG
+const contentResponse = await fetch(contentUrl);
+
+if (!contentResponse.ok) {
+    const errorText = await contentResponse.text();
+
+    console.error("ERRORE WIKIPEDIA CONTENT");
+    console.error("Status:", contentResponse.status);
+    console.error("Status text:", contentResponse.statusText);
+    console.error("Risposta:", errorText);
+
+    throw new Error(
+        `Errore Wikipedia: ${contentResponse.status} ${contentResponse.statusText}`
+    );
+}*/
 
     const contentData = await contentResponse.json();
 

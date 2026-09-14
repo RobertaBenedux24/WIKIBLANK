@@ -53,6 +53,10 @@ router.get("/", authToken, async (req, res) => {
         const result = await pool.query(
             `SELECT
                 id,
+            CASE 
+                WHEN status = 'in_progess' THEN NULL
+                ELSE article_title
+            END AS article_title,
                 status,
                 attempts,
                 guessed_words,
