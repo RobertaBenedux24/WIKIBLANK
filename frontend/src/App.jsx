@@ -10,7 +10,6 @@ import Play from "./pages/Play";
 import Game from "./pages/Game";
 import Games from "./pages/Games";
 import Classification from "./pages/Classification";
-import Profile from "./pages/Profile";
 import CompletedGames from "./pages/CompletedGames";
 
 function App() {
@@ -32,8 +31,6 @@ function App() {
                 <Route path="/games" element={<Games />} />
 
                 <Route path="/classification" element={<Classification />} />
-
-                <Route path="/profile" element={<Profile />} />
 
                 <Route path="/completed-games" element={<CompletedGames />} />
             </Routes>

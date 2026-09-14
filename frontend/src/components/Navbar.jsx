@@ -41,8 +41,6 @@ function Navbar() {
 
                     <Link to="/games"> Le mie partite </Link>
 
-                    <Link to="/profile"> Profilo </Link>
-
                     {user && (
                         <span>
                             Ciao, {user.username}

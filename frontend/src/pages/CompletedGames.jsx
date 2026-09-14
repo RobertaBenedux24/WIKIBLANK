@@ -36,60 +36,114 @@ function CompletedGames() {
     }
 
     return (
-        <div>
-            <h1>Partite concluse</h1>
+        <main className="completed-page">
+
+            <section className="completed-header">
+                <h1>Partite concluse</h1>
+
+                <p>
+                    Esplora le partite terminate dagli altri giocatori
+                    e scopri come hanno risolto gli articoli.
+                </p>
+            </section>
+
 
             {games.length === 0 ? (
-                <p>Non ci sono ancora partite concluse.</p>
+
+                <section className="completed-empty">
+                    <h2>Nessuna partita conclusa</h2>
+
+                    <p>
+                        Non ci sono ancora partite da mostrare.
+                    </p>
+                </section>
+
             ) : (
-                games.map((game) => (
-                    <div key={game.id}>
 
-                        <h2>
-                            {game.article_title}
-                        </h2>
+                <section className="completed-list">
 
-                        <p>
-                            Giocatore: {game.username}
-                        </p>
+                    {games.map((game) => (
 
-                        <p>
-                            Stato: {game.status}
-                        </p>
+                        <article
+                            key={game.id}
+                            className="completed-card"
+                        >
 
-                        <p>
-                            Tentativi: {game.attempts}
-                        </p>
+                            <div className="completed-card-top">
 
-                        <p>
-                            Tempo impiegato:{" "}
-                            {Math.floor(
-                                game.duration_seconds / 60
-                            )} min{" "}
-                            {game.duration_seconds % 60} sec
-                        </p>
+                                <div>
+                                    <p className="completed-game-id">
+                                        PARTITA #{game.id}
+                                    </p>
 
-                        <h3>
-                            Testo scoperto
-                        </h3>
+                                    <h2>
+                                        {game.article_title}
+                                    </h2>
 
-                        <p>
-                            {game.masked_text}
-                        </p>
+                                    <p className="completed-player">
+                                        Giocata da{" "}
+                                        <strong>{game.username}</strong>
+                                    </p>
+                                </div>
 
-                        <p>
-                            Terminata il:{" "}
-                            {new Date(
-                                game.finished_at
-                            ).toLocaleString()}
-                        </p>
 
-                        <hr />
+                                <span
+                                    className={`completed-status ${
+                                        game.status
+                                    }`}
+                                >
+                                    {game.status === "won"
+                                        ? "VINTA"
+                                        : "ABBANDONATA"
+                                    }
+                                </span>
 
-                    </div>
-                ))
+                            </div>
+
+
+                            <div className="completed-meta">
+
+                                <span>
+                                    <strong>{game.attempts}</strong>
+                                    {" "}tentativi
+                                </span>
+
+                                <span>
+                                    {Math.floor(
+                                        game.duration_seconds / 60
+                                    )} min{" "}
+                                    {game.duration_seconds % 60} sec
+                                </span>
+
+                                <span>
+                                    {new Date(
+                                        game.finished_at
+                                    ).toLocaleDateString("it-IT")}
+                                </span>
+
+                            </div>
+
+
+                            <div className="completed-preview">
+
+                                <p className="completed-preview-label">
+                                    TESTO SCOPERTO
+                                </p>
+
+                                <p className="completed-preview-text">
+                                    {game.masked_text}
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                    ))}
+
+                </section>
             )}
-        </div>
+
+        </main>
     );
 }
 

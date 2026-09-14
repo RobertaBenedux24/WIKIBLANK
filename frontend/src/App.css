@@ -1976,3 +1976,265 @@
         grid-column: 2;
     }
 }
+
+/* =========================
+   PARTITE CONCLUSE
+   ========================= */
+
+.completed-page {
+    width: 100%;
+    max-width: 1050px;
+
+    margin: 0 auto;
+
+    padding: 40px 28px 60px;
+
+    box-sizing: border-box;
+}
+
+
+/* HEADER */
+
+.completed-header {
+    text-align: center;
+}
+
+.completed-header h1 {
+    margin: 0;
+
+    font-size: 48px;
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+    color: #111;
+}
+
+.completed-header p {
+    margin: 14px auto 0;
+
+    max-width: 650px;
+
+    font-size: 16px;
+    line-height: 1.6;
+
+    color: #666;
+}
+
+
+/* LISTA */
+
+.completed-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+
+    margin-top: 38px;
+}
+
+
+/* CARD */
+
+.completed-card {
+    padding: 22px 24px;
+
+    border: 1px solid #e1e1e1;
+    border-radius: 14px;
+
+    background: #fff;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.05),
+        0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+
+/* TESTATA CARD */
+
+.completed-card-top {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 20px;
+}
+
+.completed-game-id {
+    margin: 0 0 5px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #888;
+}
+
+.completed-card h2 {
+    margin: 0;
+
+    font-size: 23px;
+    font-weight: 800;
+
+    color: #111;
+}
+
+.completed-player {
+    margin: 7px 0 0;
+
+    font-size: 13px;
+
+    color: #666;
+}
+
+.completed-player strong {
+    color: #111;
+}
+
+
+/* BADGE */
+
+.completed-status {
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    white-space: nowrap;
+}
+
+.completed-status.won {
+    background: #e8f6ee;
+
+    color: #18864b;
+
+    border: 1px solid #b9dfc9;
+}
+
+.completed-status.abandoned {
+    background: #fdecec;
+
+    color: #c62828;
+
+    border: 1px solid #efc0c0;
+}
+
+
+/* META INFO */
+
+.completed-meta {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    margin-top: 14px;
+
+    font-size: 13px;
+
+    color: #666;
+}
+
+.completed-meta strong {
+    color: #111;
+}
+
+
+/* ANTEPRIMA TESTO */
+
+.completed-preview {
+    margin-top: 18px;
+
+    padding: 16px 18px;
+
+    border-radius: 10px;
+
+    background: #fafafa;
+
+    border: 1px solid #eeeeee;
+}
+
+.completed-preview-label {
+    margin: 0 0 8px;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    color: #888;
+}
+
+.completed-preview-text {
+    margin: 0;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 13px;
+    line-height: 1.6;
+
+    color: #444;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* EMPTY */
+
+.completed-empty {
+    max-width: 500px;
+
+    margin: 50px auto 0;
+
+    padding: 35px;
+
+    border: 1px solid #e1e1e1;
+    border-radius: 14px;
+
+    text-align: center;
+}
+
+.completed-empty h2 {
+    margin: 0 0 8px;
+}
+
+.completed-empty p {
+    margin: 0;
+
+    color: #666;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .completed-page {
+        padding: 30px 18px 50px;
+    }
+
+    .completed-header h1 {
+        font-size: 38px;
+    }
+
+    .completed-card-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .completed-meta {
+        gap: 10px;
+    }
+}
