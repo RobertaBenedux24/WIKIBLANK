@@ -98,8 +98,8 @@ router.get("/classification", async (req, res) => {
              WHERE g.status = 'won'
              GROUP BY u.id, u.username
              ORDER BY
-                average_time_seconds ASC,
-                wins DESC`
+                wins DESC,
+                average_time_seconds ASC`
         );
 
         const classification = result.rows.map((row, index) => ({
