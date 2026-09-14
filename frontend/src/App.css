@@ -85,26 +85,6 @@
     margin-top: 12px;
 }
 
-.game-text {
-    width: 100%;
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 18px 22px;
-
-    font-size: 13px;
-    line-height: 1.55;
-
-    background-color: #ffffff;
-
-    border: 1px solid #eeeeee;
-    border-radius: 12px;
-
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-
-    white-space: pre-wrap;
-    word-break: normal;
-}
-
 /* =========================
    HOME PAGE
    ========================= */
@@ -679,90 +659,122 @@
 .game-page {
     width: 100%;
     max-width: 1050px;
+
     margin: 0 auto;
-    padding: 34px 28px 50px;
+
+    padding: 22px 28px 26px;
+
+    box-sizing: border-box;
 }
 
 /* TESTATA */
 
-.game-status-bar {
+.game-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
+
     gap: 30px;
-    margin-bottom: 28px;
+
+    margin-bottom: 18px;
 }
 
 .game-status-label {
-    margin: 0 0 10px;
+    margin: 0 0 8px;
+
     font-size: 12px;
     font-weight: 800;
+
     letter-spacing: 2px;
-    color: #555;
+
+    color: #555555;
 }
 
-.game-status-bar h1 {
-    margin: 0;
+.game-header h1 {
+    margin: 0 0 10px;
+
     font-size: 38px;
     line-height: 1.1;
-    color: #111;
+
+    font-weight: 800;
+
+    color: #111111;
 }
 
-.game-subtitle {
-    margin: 10px 0 0;
+.game-description {
+    margin: 0;
+
     font-size: 15px;
-    color: #666;
+    line-height: 1.5;
+
+    color: #666666;
 }
 
-.game-attempts-box {
-    min-width: 100px;
-    padding: 14px 18px;
-    border: 1px solid #ddd;
+.attempts-box {
+    min-width: 95px;
+
+    padding: 12px 18px;
+
+    border: 1px solid #dcdcdc;
     border-radius: 12px;
+
+    background-color: #ffffff;
+
     text-align: center;
+
+    flex-shrink: 0;
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.05),
+        0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.game-attempts-box span {
+.attempts-box span {
     display: block;
+
     margin-bottom: 4px;
 
     font-size: 10px;
     font-weight: 700;
 
-    letter-spacing: 1.5px;
-    color: #777;
+    letter-spacing: 2px;
+
+    color: #777777;
 }
 
-.game-attempts-box strong {
+.attempts-box strong {
     display: block;
+
     font-size: 28px;
-    color: #111;
+    line-height: 1;
+
+    font-weight: 800;
+
+    color: #111111;
 }
 
 /* ARTICOLO */
 
 .game-article-section {
-    margin-bottom: 26px;
-}
-
-.game-article-header h2 {
-    margin: 0 0 10px;
-    font-size: 18px;
-    color: #111;
+    margin-bottom: 18px;
 }
 
 .game-text {
-    padding: 24px 28px;
+    padding: 18px 24px;
 
     background: #fafafa;
 
     border: 1px solid #e3e3e3;
     border-radius: 14px;
 
-    font-size: 14px;
-    line-height: 1.75;
+    font-size: 13px;
+    line-height: 1.55;
 
     white-space: pre-wrap;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 .correct-word {
@@ -775,20 +787,22 @@
 
 .game-interaction-layout {
     display: grid;
-
     grid-template-columns: 2fr 1fr;
 
-    gap: 22px;
+    gap: 16px;
 }
 
 .game-word-panel,
 .game-title-panel {
-    padding: 24px;
+    padding: 18px;
 
     border: 1px solid #e1e1e1;
     border-radius: 14px;
 
     background: #fff;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.06),
+        0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 .panel-label {
@@ -812,7 +826,7 @@
 }
 
 .panel-description {
-    margin: 0 0 18px;
+    margin: 0 0 12px;
 
     font-size: 14px;
     line-height: 1.5;
@@ -939,159 +953,169 @@
     color: #111;
 }
 
-
-/* PARTITA TERMINATA */
-
-.game-finished {
-    margin-top: 25px;
-
-    padding: 28px;
-
-    border: 1px solid #ddd;
-    border-radius: 14px;
-
-    text-align: center;
-}
-
-.game-finished h2 {
-    margin: 0 0 12px;
-
-    font-size: 28px;
-}
-
-.game-finished p {
-    color: #555;
-}
-
-.game-finished button {
-    margin-top: 12px;
-
-    padding: 12px 20px;
-
-    border: none;
-    border-radius: 8px;
-
-    background: #111;
-    color: #fff;
-
-    font-weight: 700;
-    cursor: pointer;
-}
-
 /* =========================
-   SCHERMATA VITTORIA
+   PAGINA VITTORIA
    ========================= */
 
-.game-win-screen {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 35px 24px 60px;
+.game-page.game-page-won {
+    width: 100%;
+    max-width: none;
 
-    text-align: center;
+    height: calc(100dvh - 74px);
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
 }
 
 
-/* GIF */
+/* CONTENUTO */
+
+.game-win-screen {
+    width: 100%;
+    height: 100%;
+
+    max-width: 1050px;
+
+    margin: 0 auto;
+    padding: 18px 30px;
+    padding-top: 28px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    overflow: hidden;
+}
+
+
+/* GIF - GRANDE COME NELLA HOME */
 
 .game-win-gif {
     display: block;
 
-    width: 190px;
-    max-width: 70%;
+    width: 270px;
+    height: 180px;
 
-    margin: 0 auto 18px;
+    flex-shrink: 0;
+
+    margin: 0 auto 8px;
 
     object-fit: contain;
 }
 
 
-/* ETICHETTA */
+/* SCRITTA SOPRA IL TITOLO */
 
 .game-win-label {
-    margin: 0 0 14px;
+    margin: 0 0 9px;
 
-    font-size: 13px;
+    font-size: 17px;
     font-weight: 700;
 
-    letter-spacing: 5px;
+    letter-spacing: 6px;
 
-    color: #666666;
+    color: #333333;
 }
 
 
-/* TITOLO INDOVINATO */
+/* TITOLO */
 
 .game-win-title {
-    margin: 0 0 32px;
-
-    font-size: 52px;
+    margin: 0 0 18px;
+    margin-bottom: 20px;    
+    font-size: 50px;
     line-height: 1.05;
 
     font-weight: 800;
 
-    letter-spacing: -1px;
+    letter-spacing: -2px;
 
     color: #111111;
 }
 
 
-/* ARTICOLO COMPLETO */
+/* ARTICOLO */
 
 .game-win-article {
-    padding: 26px 30px;
-
-    background-color: #fafafa;
-
-    border: 1px solid #e3e3e3;
-    border-radius: 14px;
-
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: #252525;
     text-align: left;
 
-    font-size: 14px;
-    line-height: 1.75;
+    max-height: 165px;
+    overflow-y: auto;
 
-    white-space: pre-wrap;
+    padding: 22px 26px;
+
+    background: #fff;
+    border: 1px solid #e4e4e4;
+    border-radius: 14px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 12px 30px rgba(0, 0, 0, 0.14);
 }
 
+/* SCROLL SOLO NELL'ARTICOLO */
 
-/* RISULTATO */
+.game-win-article::-webkit-scrollbar {
+    width: 6px;
+}
+
+.game-win-article::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+    border-radius: 10px;
+}
+
+/* PARTE FINALE */
 
 .game-win-result {
-    margin-top: 28px;
-
-    padding-top: 24px;
-
+    /*flex-shrink: 0;*/
+    margin-top: 16px;
     text-align: center;
 }
 
 .game-win-result-label {
-    margin: 0 0 8px;
+    margin: 0 0 4px;
 
     font-size: 11px;
     font-weight: 700;
 
-    letter-spacing: 3px;
+    letter-spacing: 4px;
 
-    color: #777777;
+    color: #666666;
 }
 
 .game-win-result h2 {
-    margin: 0 0 10px;
+    margin: 0 0 4px;
 
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 800;
 
     color: #111111;
 }
 
 .game-win-result p {
-    margin: 0 0 18px;
+    margin: 0 0 9px;
+
+    font-size: 13px;
 
     color: #666666;
 }
 
+
+/* PULSANTE */
+
 .game-win-result button {
-    padding: 13px 24px;
+    padding: 10px 22px;
 
     border: none;
     border-radius: 8px;
@@ -1099,27 +1123,18 @@
     background-color: #111111;
     color: white;
 
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
 
     cursor: pointer;
+
+    transition: 0.2s ease;
 }
 
 .game-win-result button:hover {
     background-color: #333333;
+    transform: translateY(-1px);
 }
-
-/*.win-gif {
-    display: block;
-
-    width: 180px;
-    max-width: 70%;
-
-    margin: 0 auto 18px;
-
-    object-fit: contain;
-}*/
-
 
 /* ERRORI */
 
@@ -1194,4 +1209,95 @@
     .game-word-form button {
         width: 100%;
     }
+}
+
+/* =========================
+   PARTITA ABBANDONATA
+   ========================= */
+
+.game-abandoned-screen {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    text-align: center;
+    overflow: hidden;
+}
+
+.game-abandoned-gif {
+    width: 260px;
+    height: 180px;
+
+    object-fit: contain;
+
+    margin-bottom: 8px;
+}
+
+.game-abandoned-label {
+    margin: 0 0 16px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    letter-spacing: 5px;
+
+    color: #555;
+}
+
+.game-abandoned-text {
+    margin: 0 0 8px;
+
+    font-size: 17px;
+
+    color: #666;
+}
+
+.game-abandoned-title {
+    margin: 0 0 28px;
+
+    font-size: 48px;
+    line-height: 1.05;
+
+    font-weight: 800;
+
+    color: #111;
+}
+
+.game-abandoned-actions {
+    display: flex;
+    justify-content: center;
+
+    gap: 14px;
+}
+
+.game-abandoned-actions button {
+    min-width: 150px;
+
+    padding: 13px 20px;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.abandoned-exit-button {
+    border: 1px solid #cccccc;
+
+    background: #ffffff;
+    color: #111;
+}
+
+.abandoned-new-button {
+    border: 1px solid #111;
+
+    background: #111;
+    color: #ffffff;
 }

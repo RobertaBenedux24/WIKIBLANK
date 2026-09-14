@@ -5,6 +5,8 @@ import api from "../services/api";
 
 import winGif from "../assets/win.gif";
 
+import abandonGif from "../assets/abb.gif";
+
 function Game() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -172,7 +174,11 @@ function Game() {
     };
 
     return (
-        <main className="game-page">
+        <main
+            className={`game-page ${
+                game.status === "won" ? "game-page-won" : ""
+            }`}
+        >
 
             {/* =========================
                 PARTITA IN CORSO
@@ -381,6 +387,50 @@ function Game() {
                         </p>
 
                         <button
+                            onClick={() => navigate("/play")}
+                        >
+                            Nuova partita
+                        </button>
+
+                    </div>
+
+                </section>
+            )}
+
+            {/*PARTITA ABBANDONATA */}
+
+            {game.status === "abandoned" && (
+                <section className="game-abandoned-screen">
+
+                    <img
+                        src={abandonGif}
+                        alt="Partita abbandonata"
+                        className="game-abandoned-gif"
+                    />
+
+                    <p className="game-abandoned-label">
+                        PARTITA ABBANDONATA
+                    </p>
+
+                    <p className="game-abandoned-text">
+                        Il titolo corretto è:
+                    </p>
+
+                    <h1 className="game-abandoned-title">
+                        {game.article_title}
+                    </h1>
+
+                    <div className="game-abandoned-actions">
+
+                        <button
+                            className="abandoned-exit-button"
+                            onClick={() => navigate("/")}
+                        >
+                            Esci
+                        </button>
+
+                        <button
+                            className="abandoned-new-button"
                             onClick={() => navigate("/play")}
                         >
                             Nuova partita
