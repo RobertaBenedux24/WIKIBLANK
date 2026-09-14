@@ -77,3 +77,10 @@ ADD COLUMN wrong_guesses TEXT[] DEFAULT '{}';
 SELECT * FROM games;
 SELECT id, guessed_words, wrong_guesses
 FROM games;
+
+SELECT
+    id,
+    article_title,
+    status
+FROM games
+ORDER BY id DESC;
