@@ -171,6 +171,10 @@ async function getRandomArticle() {
         const randomResponse = await fetch(randomUrl);
 
         if (!randomResponse.ok) {
+
+            console.log("Wikipedia status:", randomResponse.status);
+            console.log("Wikipedia statusText:", randomResponse.statusText);
+
             throw new Error(
                 "Errore nel recupero dell'articolo casuale"
             );
