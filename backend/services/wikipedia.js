@@ -150,106 +150,103 @@ function removeShortParagraphs(text) {
 
 
 async function getRandomArticle() {
-    const randomUrl =
-        "https://it.wikipedia.org/w/api.php" +
-        "?action=query" +
-        "&list=random" +
-        "&rnnamespace=0" +
-        "&rnfilterredir=nonredirects" +
-        "&rnminsize=2000" +
-        "&rnmaxsize=20000" +
-        "&rnlimit=1" +
-        "&format=json" +
-        "&origin=*";
 
-    const randomResponse = await fetch(randomUrl);
+    const MAX_TITLE_LENGTH = 60;
+    const MAX_ATTEMPTS = 5;
 
-    if (!randomResponse.ok) {
-        throw new Error(
-            "Errore nel recupero dell'articolo casuale"
-        );
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+
+        const randomUrl =
+            "https://it.wikipedia.org/w/api.php" +
+            "?action=query" +
+            "&list=random" +
+            "&rnnamespace=0" +
+            "&rnfilterredir=nonredirects" +
+            "&rnminsize=2000" +
+            "&rnmaxsize=20000" +
+            "&rnlimit=1" +
+            "&format=json" +
+            "&origin=*";
+
+        const randomResponse = await fetch(randomUrl);
+
+        if (!randomResponse.ok) {
+            throw new Error(
+                "Errore nel recupero dell'articolo casuale"
+            );
+        }
+
+        const randomData = await randomResponse.json();
+
+        const randomPage = randomData.query.random[0];
+
+        const title = randomPage.title;
+
+
+        // Se il titolo è troppo lungo, prova con un altro articolo
+        if (title.length > MAX_TITLE_LENGTH) {
+
+            console.log(
+                `Titolo troppo lungo (${title.length} caratteri): ${title}`
+            );
+
+            console.log(
+                `Nuovo tentativo ${attempt}/${MAX_ATTEMPTS}`
+            );
+
+            continue;
+        }
+
+
+        const contentUrl =
+            "https://it.wikipedia.org/w/api.php" +
+            "?action=query" +
+            "&prop=extracts" +
+            "&explaintext=1" +
+            "&exsectionformat=plain" +
+            "&titles=" + encodeURIComponent(title) +
+            "&format=json" +
+            "&origin=*";
+
+        const contentResponse = await fetch(contentUrl);
+
+        if (!contentResponse.ok) {
+            throw new Error(
+                "Errore nel recupero del contenuto dell'articolo"
+            );
+        }
+
+        const contentData = await contentResponse.json();
+
+        const pages = contentData.query.pages;
+        const page = Object.values(pages)[0];
+
+
+        let cleanedText = page.extract;
+
+        // 1. Elimina sezioni finali inutili
+        cleanedText = cleanWikipediaText(cleanedText);
+
+        // 2. Elimina intestazioni e righe inutili
+        cleanedText = removeUselessLines(cleanedText);
+
+        // 3. Elimina paragrafi troppo piccoli
+        cleanedText = removeShortParagraphs(cleanedText);
+
+        // 4. Accorcia il testo finale
+        cleanedText = shortenText(cleanedText, 1800);
+
+
+        return {
+            title: page.title,
+            text: cleanedText
+        };
     }
-/*DEBUG
-const randomResponse = await fetch(randomUrl);
 
-if (!randomResponse.ok) {
-    const errorText = await randomResponse.text();
-
-    console.error("ERRORE WIKIPEDIA RANDOM");
-    console.error("Status:", randomResponse.status);
-    console.error("Status text:", randomResponse.statusText);
-    console.error("Risposta:", errorText);
 
     throw new Error(
-        `Errore Wikipedia: ${randomResponse.status} ${randomResponse.statusText}`
+        "Impossibile trovare un articolo con un titolo adatto"
     );
-}*/
-
-    const randomData = await randomResponse.json();
-
-    const randomPage = randomData.query.random[0];
-
-    const title = randomPage.title;
-
-
-    const contentUrl =
-        "https://it.wikipedia.org/w/api.php" +
-        "?action=query" +
-        "&prop=extracts" +
-        "&explaintext=1" +
-        "&exsectionformat=plain" +
-        "&titles=" + encodeURIComponent(title) +
-        "&format=json" +
-        "&origin=*";
-
-    const contentResponse = await fetch(contentUrl);
-
-    if (!contentResponse.ok) {
-        throw new Error(
-            "Errore nel recupero del contenuto dell'articolo"
-        );
-    }
-/*DEBUG
-const contentResponse = await fetch(contentUrl);
-
-if (!contentResponse.ok) {
-    const errorText = await contentResponse.text();
-
-    console.error("ERRORE WIKIPEDIA CONTENT");
-    console.error("Status:", contentResponse.status);
-    console.error("Status text:", contentResponse.statusText);
-    console.error("Risposta:", errorText);
-
-    throw new Error(
-        `Errore Wikipedia: ${contentResponse.status} ${contentResponse.statusText}`
-    );
-}*/
-
-    const contentData = await contentResponse.json();
-
-    const pages = contentData.query.pages;
-    const page = Object.values(pages)[0];
-
-
-    let cleanedText = page.extract;
-
-    // 1. Elimina sezioni finali inutili
-    cleanedText = cleanWikipediaText(cleanedText);
-
-    // 2. Elimina intestazioni e righe inutili
-    cleanedText = removeUselessLines(cleanedText);
-
-    // 3. Elimina paragrafi troppo piccoli
-    cleanedText = removeShortParagraphs(cleanedText);
-
-    // 4. Accorcia il testo finale
-    cleanedText = shortenText(cleanedText, 1800);
-
-
-    return {
-        title: page.title,
-        text: cleanedText
-    };
 }
 
 
