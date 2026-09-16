@@ -148,6 +148,70 @@ function removeShortParagraphs(text) {
     return usefulParagraphs.join("\n\n");
 }
 
+const WIKIPEDIA_HEADERS = {
+    "User-Agent":
+        `WIKIBLANK/1.0 (${process.env.WIKIPEDIA_CONTACT_EMAIL})`,
+    "Accept": "application/json"
+};
+
+
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+async function wikipediaFetch(url, maxRetries = 3) {
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+
+        const response = await fetch(url, {
+            headers: WIKIPEDIA_HEADERS
+        });
+
+        if (response.ok) {
+            return response;
+        }
+
+        console.log(
+            `Wikipedia status: ${response.status} ${response.statusText}`
+        );
+
+        /*
+            Se Wikimedia ci sta limitando,
+            aspettiamo prima di riprovare.
+        */
+        if (response.status === 429 && attempt < maxRetries) {
+
+            const retryAfter =
+                response.headers.get("retry-after");
+
+            let waitTime;
+
+            if (retryAfter && !Number.isNaN(Number(retryAfter))) {
+                waitTime = Number(retryAfter) * 1000;
+            } else {
+                // 2s → 4s → 8s
+                waitTime = 5000 * Math.pow(2, attempt);
+            }
+
+            console.log(
+                `Rate limit Wikipedia. Nuovo tentativo tra ${waitTime / 1000}s...`
+            );
+
+            await wait(waitTime);
+
+            continue;
+        }
+
+        throw new Error(
+            `Wikipedia API error: ${response.status}`
+        );
+    }
+
+    throw new Error(
+        "Wikipedia non disponibile dopo diversi tentativi"
+    );
+}
 
 async function getRandomArticle() {
 
@@ -168,17 +232,17 @@ async function getRandomArticle() {
             "&format=json" +
             "&origin=*";
 
-        const randomResponse = await fetch(randomUrl);
+        const randomResponse = await wikipediaFetch(randomUrl);
 
-        if (!randomResponse.ok) {
+        // if (!randomResponse.ok) {
 
-            console.log("Wikipedia status:", randomResponse.status);
-            console.log("Wikipedia statusText:", randomResponse.statusText);
+        //     console.log("Wikipedia status:", randomResponse.status);
+        //     console.log("Wikipedia statusText:", randomResponse.statusText);
 
-            throw new Error(
-                "Errore nel recupero dell'articolo casuale"
-            );
-        }
+        //     throw new Error(
+        //         "Errore nel recupero dell'articolo casuale"
+        //     );
+        // }
 
         const randomData = await randomResponse.json();
 
@@ -212,13 +276,13 @@ async function getRandomArticle() {
             "&format=json" +
             "&origin=*";
 
-        const contentResponse = await fetch(contentUrl);
+        const contentResponse = await wikipediaFetch(contentUrl);
 
-        if (!contentResponse.ok) {
-            throw new Error(
-                "Errore nel recupero del contenuto dell'articolo"
-            );
-        }
+        // if (!contentResponse.ok) {
+        //     throw new Error(
+        //         "Errore nel recupero del contenuto dell'articolo"
+        //     );
+        // }
 
         const contentData = await contentResponse.json();
 
