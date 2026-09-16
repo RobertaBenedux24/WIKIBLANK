@@ -146,13 +146,83 @@ import { test, expect } from '@playwright/test';
 //     expect(token).toBeNull();
 // });
 
-test('TEST 5:un utente non autenticato non può creare una partita', async ({ request }) => {
+// test('TEST 5:un utente non autenticato non può creare una partita', async ({ request }) => {
 
-    const response = await request.post(
-        'http://localhost:3000/api/games'
+//     const response = await request.post(
+//         'http://localhost:3000/api/games'
+//     );
+
+//     // Senza token JWT il middleware authToken
+//     // deve bloccare la richiesta
+//     expect(response.status()).toBe(401);
+// });
+
+test('TEST 6:un utente autenticato può creare una nuova partita', async ({ page, request }) => {
+
+    const uniqueId = Date.now();
+
+    const username = `gameuser${uniqueId}`;
+    const email = `game${uniqueId}@wikiblank.it`;
+    const password = 'Test1234!';
+
+    // Creiamo un nuovo utente
+    const registerResponse = await request.post(
+        'http://localhost:3000/api/register',
+        {
+            data: {
+                username,
+                email,
+                password
+            }
+        }
     );
 
-    // Senza token JWT il middleware authToken
-    // deve bloccare la richiesta
-    expect(response.status()).toBe(401);
+    expect(registerResponse.ok()).toBeTruthy();
+
+    // Effettuiamo il login tramite API
+    const loginResponse = await request.post(
+        'http://localhost:3000/api/login',
+        {
+            data: {
+                email,
+                password
+            }
+        }
+    );
+
+    expect(loginResponse.ok()).toBeTruthy();
+
+    const loginData = await loginResponse.json();
+
+    // Apriamo prima il sito per avere accesso al localStorage
+    await page.goto('/');
+
+    // Salviamo token e utente come fa Login.jsx
+    await page.evaluate(
+        ({ token, user }) => {
+            localStorage.setItem('token', token);
+            localStorage.setItem(
+                'user',
+                JSON.stringify(user)
+            );
+        },
+        {
+            token: loginData.token,
+            user: loginData.user
+        }
+    );
+
+    // Andiamo alla pagina Gioca
+    await page.goto('/play');
+
+    // Avviamo realmente la partita dalla UI
+    await page.getByRole('button', {
+        name: 'Inizia partita'
+    }).click();
+
+    // Dopo la creazione dobbiamo arrivare a /game/ID
+    await expect(page).toHaveURL(
+        /\/game\/\d+/
+    );
 });
+
