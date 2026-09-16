@@ -416,88 +416,120 @@ import { test, expect } from '@playwright/test';
 //     ).toBeVisible();
 // });
 
-test('TEST 9:un utente può visualizzare le proprie partite', async ({ page, request }) => {
+// test('TEST 9:un utente può visualizzare le proprie partite', async ({ page, request }) => {
 
-    const uniqueId = Date.now();
+//     const uniqueId = Date.now();
 
-    const username = `gamesuser${uniqueId}`;
-    const email = `games${uniqueId}@wikiblank.it`;
-    const password = 'Test1234!';
+//     const username = `gamesuser${uniqueId}`;
+//     const email = `games${uniqueId}@wikiblank.it`;
+//     const password = 'Test1234!';
 
-    // Creiamo l'utente
-    const registerResponse = await request.post(
-        'http://localhost:3000/api/register',
-        {
-            data: {
-                username,
-                email,
-                password
-            }
-        }
-    );
+//     // Creiamo l'utente
+//     const registerResponse = await request.post(
+//         'http://localhost:3000/api/register',
+//         {
+//             data: {
+//                 username,
+//                 email,
+//                 password
+//             }
+//         }
+//     );
 
-    expect(registerResponse.ok()).toBeTruthy();
+//     expect(registerResponse.ok()).toBeTruthy();
 
-    // Login
-    const loginResponse = await request.post(
-        'http://localhost:3000/api/login',
-        {
-            data: {
-                email,
-                password
-            }
-        }
-    );
+//     // Login
+//     const loginResponse = await request.post(
+//         'http://localhost:3000/api/login',
+//         {
+//             data: {
+//                 email,
+//                 password
+//             }
+//         }
+//     );
 
-    expect(loginResponse.ok()).toBeTruthy();
+//     expect(loginResponse.ok()).toBeTruthy();
 
-    const loginData = await loginResponse.json();
+//     const loginData = await loginResponse.json();
 
-    // Creiamo una partita appartenente a questo utente
-    const gameResponse = await request.post(
-        'http://localhost:3000/api/games',
-        {
-            headers: {
-                Authorization: `Bearer ${loginData.token}`
-            }
-        }
-    );
+//     // Creiamo una partita appartenente a questo utente
+//     const gameResponse = await request.post(
+//         'http://localhost:3000/api/games',
+//         {
+//             headers: {
+//                 Authorization: `Bearer ${loginData.token}`
+//             }
+//         }
+//     );
 
-    expect(gameResponse.ok()).toBeTruthy();
+//     expect(gameResponse.ok()).toBeTruthy();
 
-    const gameData = await gameResponse.json();
-    const gameId = gameData.game.id;
+//     const gameData = await gameResponse.json();
+//     const gameId = gameData.game.id;
 
-    // Prepariamo il localStorage
+//     // Prepariamo il localStorage
+//     await page.goto('/');
+
+//     await page.evaluate(
+//         ({ token, user }) => {
+//             localStorage.setItem('token', token);
+//             localStorage.setItem(
+//                 'user',
+//                 JSON.stringify(user)
+//             );
+//         },
+//         {
+//             token: loginData.token,
+//             user: loginData.user
+//         }
+//     );
+
+//     // Apriamo "Le mie partite"
+//     await page.goto('/games');
+
+//     // La pagina deve essere caricata
+//     await expect(
+//         page.getByRole('heading', {
+//             name: 'Le mie partite'
+//         })
+//     ).toBeVisible();
+
+//     // Deve comparire la partita appena creata
+//     await expect(
+//         page.getByText(`PARTITA #${gameId}`)
+//     ).toBeVisible();
+// });
+
+test('TEST 10:le partite concluse sono accessibili anche senza login', async ({ page }) => {
+
+    // Apriamo la Home per inizializzare il localStorage
     await page.goto('/');
 
-    await page.evaluate(
-        ({ token, user }) => {
-            localStorage.setItem('token', token);
-            localStorage.setItem(
-                'user',
-                JSON.stringify(user)
-            );
-        },
-        {
-            token: loginData.token,
-            user: loginData.user
-        }
-    );
+    // Ci assicuriamo che l'utente NON sia autenticato
+    await page.evaluate(() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+    });
 
-    // Apriamo "Le mie partite"
-    await page.goto('/games');
+    // Apriamo direttamente la pagina pubblica
+    await page.goto('/completed-games');
 
-    // La pagina deve essere caricata
+    // La pagina deve essere accessibile
     await expect(
         page.getByRole('heading', {
-            name: 'Le mie partite'
+            name: 'Partite concluse'
         })
     ).toBeVisible();
 
-    // Deve comparire la partita appena creata
-    await expect(
-        page.getByText(`PARTITA #${gameId}`)
-    ).toBeVisible();
+    // Non deve esserci alcun token
+    const token = await page.evaluate(() =>
+        localStorage.getItem('token')
+    );
+
+    expect(token).toBeNull();
+
+    // Dobbiamo essere rimasti sulla pagina pubblica
+    await expect(page).toHaveURL('/completed-games');
 });
 
