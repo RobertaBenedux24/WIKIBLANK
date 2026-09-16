@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-/*test('TEST 1: la Home di WIKIBLANK viene caricata correttamente', async ({ page }) => {
+test('TEST 1: la Home di WIKIBLANK viene caricata correttamente', async ({ page }) => {
 
     await page.goto('/');
 
@@ -10,7 +10,7 @@ import { test, expect } from '@playwright/test';
         page.getByRole('link', { name: 'WIKIBLANK' })
     ).toBeVisible();
 
-});*/
+});
 
 test('TEST 2:un nuovo utente può registrarsi', async ({ page }) => {
 
