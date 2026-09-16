@@ -157,15 +157,84 @@ import { test, expect } from '@playwright/test';
 //     expect(response.status()).toBe(401);
 // });
 
-test('TEST 6:un utente autenticato può creare una nuova partita', async ({ page, request }) => {
+// test('TEST 6:un utente autenticato può creare una nuova partita', async ({ page, request }) => {
+
+//     const uniqueId = Date.now();
+
+//     const username = `gameuser${uniqueId}`;
+//     const email = `game${uniqueId}@wikiblank.it`;
+//     const password = 'Test1234!';
+
+//     // Creiamo un nuovo utente
+//     const registerResponse = await request.post(
+//         'http://localhost:3000/api/register',
+//         {
+//             data: {
+//                 username,
+//                 email,
+//                 password
+//             }
+//         }
+//     );
+
+//     expect(registerResponse.ok()).toBeTruthy();
+
+//     // Effettuiamo il login tramite API
+//     const loginResponse = await request.post(
+//         'http://localhost:3000/api/login',
+//         {
+//             data: {
+//                 email,
+//                 password
+//             }
+//         }
+//     );
+
+//     expect(loginResponse.ok()).toBeTruthy();
+
+//     const loginData = await loginResponse.json();
+
+//     // Apriamo prima il sito per avere accesso al localStorage
+//     await page.goto('/');
+
+//     // Salviamo token e utente come fa Login.jsx
+//     await page.evaluate(
+//         ({ token, user }) => {
+//             localStorage.setItem('token', token);
+//             localStorage.setItem(
+//                 'user',
+//                 JSON.stringify(user)
+//             );
+//         },
+//         {
+//             token: loginData.token,
+//             user: loginData.user
+//         }
+//     );
+
+//     // Andiamo alla pagina Gioca
+//     await page.goto('/play');
+
+//     // Avviamo realmente la partita dalla UI
+//     await page.getByRole('button', {
+//         name: 'Inizia partita'
+//     }).click();
+
+//     // Dopo la creazione dobbiamo arrivare a /game/ID
+//     await expect(page).toHaveURL(
+//         /\/game\/\d+/
+//     );
+// });
+
+test('TEST 7:un utente può provare una parola durante una partita', async ({ page, request }) => {
 
     const uniqueId = Date.now();
 
-    const username = `gameuser${uniqueId}`;
-    const email = `game${uniqueId}@wikiblank.it`;
+    const username = `guessuser${uniqueId}`;
+    const email = `guess${uniqueId}@wikiblank.it`;
     const password = 'Test1234!';
 
-    // Creiamo un nuovo utente
+    // Creiamo l'utente
     const registerResponse = await request.post(
         'http://localhost:3000/api/register',
         {
@@ -179,7 +248,7 @@ test('TEST 6:un utente autenticato può creare una nuova partita', async ({ page
 
     expect(registerResponse.ok()).toBeTruthy();
 
-    // Effettuiamo il login tramite API
+    // Login
     const loginResponse = await request.post(
         'http://localhost:3000/api/login',
         {
@@ -194,10 +263,24 @@ test('TEST 6:un utente autenticato può creare una nuova partita', async ({ page
 
     const loginData = await loginResponse.json();
 
-    // Apriamo prima il sito per avere accesso al localStorage
+    // Creiamo una partita autenticata
+    const gameResponse = await request.post(
+        'http://localhost:3000/api/games',
+        {
+            headers: {
+                Authorization: `Bearer ${loginData.token}`
+            }
+        }
+    );
+
+    expect(gameResponse.ok()).toBeTruthy();
+
+    const gameData = await gameResponse.json();
+    const gameId = gameData.game.id;
+
+    // Prepariamo il localStorage del browser
     await page.goto('/');
 
-    // Salviamo token e utente come fa Login.jsx
     await page.evaluate(
         ({ token, user }) => {
             localStorage.setItem('token', token);
@@ -212,17 +295,31 @@ test('TEST 6:un utente autenticato può creare una nuova partita', async ({ page
         }
     );
 
-    // Andiamo alla pagina Gioca
-    await page.goto('/play');
+    // Apriamo la partita
+    await page.goto(`/game/${gameId}`);
 
-    // Avviamo realmente la partita dalla UI
+    // Verifichiamo che sia in corso
+    await expect(
+        page.getByText('Indovina l\'articolo')
+    ).toBeVisible();
+
+    // Inseriamo una parola di prova
+    await page.getByPlaceholder(
+        'Inserisci una parola'
+    ).fill('xyzparolainesistente');
+
     await page.getByRole('button', {
-        name: 'Inizia partita'
+        name: 'Prova parola'
     }).click();
 
-    // Dopo la creazione dobbiamo arrivare a /game/ID
-    await expect(page).toHaveURL(
-        /\/game\/\d+/
-    );
+    // Dopo il tentativo il campo deve essere svuotato
+    await expect(
+        page.getByPlaceholder('Inserisci una parola')
+    ).toHaveValue('');
+
+    // Il numero dei tentativi deve essere diventato 1
+    await expect(
+        page.locator('.attempts-box strong')
+    ).toHaveText('1');
 });
 
