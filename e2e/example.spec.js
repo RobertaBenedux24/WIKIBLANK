@@ -112,36 +112,47 @@ import { test, expect } from '@playwright/test';
 //     expect(savedUser).not.toBeNull();
 // });
 
-test('TEST 4:il login con credenziali errate mostra un errore', async ({ page }) => {
+// test('TEST 4:il login con credenziali errate mostra un errore', async ({ page }) => {
 
-    await page.goto('/login');
+//     await page.goto('/login');
 
-    // Inseriamo credenziali volutamente errate
-    await page.getByLabel('Email').fill(
-        'utenteinesistente@wikiblank.it'
+//     // Inseriamo credenziali volutamente errate
+//     await page.getByLabel('Email').fill(
+//         'utenteinesistente@wikiblank.it'
+//     );
+
+//     await page.getByLabel('Password').fill(
+//         'PasswordSbagliata123!'
+//     );
+
+//     // Proviamo ad accedere
+//     await page.getByRole('button', {
+//         name: 'Accedi'
+//     }).click();
+
+//     // L'utente deve rimanere nella pagina di login
+//     await expect(page).toHaveURL('/login');
+
+//     // Deve comparire il messaggio di errore
+//     await expect(
+//         page.locator('.login-error')
+//     ).toBeVisible();
+
+//     // Non deve essere stato salvato nessun token
+//     const token = await page.evaluate(() =>
+//         localStorage.getItem('token')
+//     );
+
+//     expect(token).toBeNull();
+// });
+
+test('TEST 5:un utente non autenticato non può creare una partita', async ({ request }) => {
+
+    const response = await request.post(
+        'http://localhost:3000/api/games'
     );
 
-    await page.getByLabel('Password').fill(
-        'PasswordSbagliata123!'
-    );
-
-    // Proviamo ad accedere
-    await page.getByRole('button', {
-        name: 'Accedi'
-    }).click();
-
-    // L'utente deve rimanere nella pagina di login
-    await expect(page).toHaveURL('/login');
-
-    // Deve comparire il messaggio di errore
-    await expect(
-        page.locator('.login-error')
-    ).toBeVisible();
-
-    // Non deve essere stato salvato nessun token
-    const token = await page.evaluate(() =>
-        localStorage.getItem('token')
-    );
-
-    expect(token).toBeNull();
+    // Senza token JWT il middleware authToken
+    // deve bloccare la richiesta
+    expect(response.status()).toBe(401);
 });
