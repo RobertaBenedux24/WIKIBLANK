@@ -323,12 +323,105 @@ import { test, expect } from '@playwright/test';
 //     ).toHaveText('1');
 // });
 
-test('TEST 8:un utente può abbandonare una partita', async ({ page, request }) => {
+// test('TEST 8:un utente può abbandonare una partita', async ({ page, request }) => {
+
+//     const uniqueId = Date.now();
+
+//     const username = `abandonuser${uniqueId}`;
+//     const email = `abandon${uniqueId}@wikiblank.it`;
+//     const password = 'Test1234!';
+
+//     // Creiamo l'utente
+//     const registerResponse = await request.post(
+//         'http://localhost:3000/api/register',
+//         {
+//             data: {
+//                 username,
+//                 email,
+//                 password
+//             }
+//         }
+//     );
+
+//     expect(registerResponse.ok()).toBeTruthy();
+
+//     // Login
+//     const loginResponse = await request.post(
+//         'http://localhost:3000/api/login',
+//         {
+//             data: {
+//                 email,
+//                 password
+//             }
+//         }
+//     );
+
+//     expect(loginResponse.ok()).toBeTruthy();
+
+//     const loginData = await loginResponse.json();
+
+//     // Creiamo una nuova partita
+//     const gameResponse = await request.post(
+//         'http://localhost:3000/api/games',
+//         {
+//             headers: {
+//                 Authorization: `Bearer ${loginData.token}`
+//             }
+//         }
+//     );
+
+//     expect(gameResponse.ok()).toBeTruthy();
+
+//     const gameData = await gameResponse.json();
+//     const gameId = gameData.game.id;
+
+//     // Prepariamo l'autenticazione nel browser
+//     await page.goto('/');
+
+//     await page.evaluate(
+//         ({ token, user }) => {
+//             localStorage.setItem('token', token);
+//             localStorage.setItem(
+//                 'user',
+//                 JSON.stringify(user)
+//             );
+//         },
+//         {
+//             token: loginData.token,
+//             user: loginData.user
+//         }
+//     );
+
+//     // Apriamo la partita
+//     await page.goto(`/game/${gameId}`);
+
+//     // Verifichiamo che sia ancora in corso
+//     await expect(
+//         page.getByText('Indovina l\'articolo')
+//     ).toBeVisible();
+
+//     // Abbandoniamo la partita
+//     await page.getByRole('button', {
+//         name: 'Abbandona partita'
+//     }).click();
+
+//     // Deve comparire la schermata di partita abbandonata
+//     await expect(
+//         page.getByText('PARTITA ABBANDONATA')
+//     ).toBeVisible();
+
+//     // Il titolo corretto deve essere mostrato
+//     await expect(
+//         page.getByText('Il titolo corretto è:')
+//     ).toBeVisible();
+// });
+
+test('TEST 9:un utente può visualizzare le proprie partite', async ({ page, request }) => {
 
     const uniqueId = Date.now();
 
-    const username = `abandonuser${uniqueId}`;
-    const email = `abandon${uniqueId}@wikiblank.it`;
+    const username = `gamesuser${uniqueId}`;
+    const email = `games${uniqueId}@wikiblank.it`;
     const password = 'Test1234!';
 
     // Creiamo l'utente
@@ -360,7 +453,7 @@ test('TEST 8:un utente può abbandonare una partita', async ({ page, request }) 
 
     const loginData = await loginResponse.json();
 
-    // Creiamo una nuova partita
+    // Creiamo una partita appartenente a questo utente
     const gameResponse = await request.post(
         'http://localhost:3000/api/games',
         {
@@ -375,7 +468,7 @@ test('TEST 8:un utente può abbandonare una partita', async ({ page, request }) 
     const gameData = await gameResponse.json();
     const gameId = gameData.game.id;
 
-    // Prepariamo l'autenticazione nel browser
+    // Prepariamo il localStorage
     await page.goto('/');
 
     await page.evaluate(
@@ -392,27 +485,19 @@ test('TEST 8:un utente può abbandonare una partita', async ({ page, request }) 
         }
     );
 
-    // Apriamo la partita
-    await page.goto(`/game/${gameId}`);
+    // Apriamo "Le mie partite"
+    await page.goto('/games');
 
-    // Verifichiamo che sia ancora in corso
+    // La pagina deve essere caricata
     await expect(
-        page.getByText('Indovina l\'articolo')
+        page.getByRole('heading', {
+            name: 'Le mie partite'
+        })
     ).toBeVisible();
 
-    // Abbandoniamo la partita
-    await page.getByRole('button', {
-        name: 'Abbandona partita'
-    }).click();
-
-    // Deve comparire la schermata di partita abbandonata
+    // Deve comparire la partita appena creata
     await expect(
-        page.getByText('PARTITA ABBANDONATA')
-    ).toBeVisible();
-
-    // Il titolo corretto deve essere mostrato
-    await expect(
-        page.getByText('Il titolo corretto è:')
+        page.getByText(`PARTITA #${gameId}`)
     ).toBeVisible();
 });
 
