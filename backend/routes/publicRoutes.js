@@ -1,27 +1,10 @@
 const express = require("express");
 
 const pool = require("../db");
-const getRandomArticle = require("../services/wikipedia");
+//const getRandomArticle = require("../services/wikipedia");
 const { maskText } = require("../utils/secretText");
 
 const router = express.Router();
-
-
-// articolo casuale da Wikipedia
-router.get("/wiki/random", async (req, res) => {
-    try {
-        const article = await getRandomArticle();
-
-        res.status(200).json(article);
-
-    } catch (error) {
-        console.error("Errore MediaWiki:", error);
-
-        res.status(500).json({
-            message: "Errore durante il recupero dell'articolo"
-        });
-    }
-});
 
 
 // partite concluse pubbliche

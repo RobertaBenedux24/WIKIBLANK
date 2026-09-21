@@ -54,7 +54,7 @@ router.get("/", authToken, async (req, res) => {
             `SELECT
                 id,
             CASE 
-                WHEN status = 'in_progess' THEN NULL
+                WHEN status = 'in_progress' THEN NULL
                 ELSE article_title
             END AS article_title,
                 status,
@@ -198,6 +198,16 @@ router.post("/:id/guess", authToken, async (req, res) => {
                 message: "Questa parola è già stata indovinata"
             });
         }
+        
+        const alreadyWrong = (game.wrong_guesses || []).some(
+            wrongWord => wrongWord.toLowerCase() === normalizedWord
+        );
+
+        if (alreadyWrong) {
+            return res.status(400).json({
+                message: "Questa parola è già stata provata"
+            });
+        }
 
         const articleWords = game.article_text.match(
             /[\p{L}\p{M}]+/gu
@@ -207,10 +217,10 @@ router.post("/:id/guess", authToken, async (req, res) => {
             articleWord => articleWord.toLowerCase() === normalizedWord
         );
 
-        /*DEBUG*/
-        console.log("Parola inserita:", normalizedWord);
-        console.log("Parola presente:", wordExists);
-        console.log("Guessed prima:", game.guessed_words);
+        // /*DEBUG*/
+        // console.log("Parola inserita:", normalizedWord);
+        // console.log("Parola presente:", wordExists);
+        // console.log("Guessed prima:", game.guessed_words);
 
         let updatedGuessedWords = game.guessed_words || [];
         let updatedWrongGuesses = game.wrong_guesses || [];
@@ -247,8 +257,8 @@ router.post("/:id/guess", authToken, async (req, res) => {
         );
 
         const updatedGame = updateResult.rows[0];
-        /* DEBUG */
-        console.log("Guessed dopo:", updatedGame.guessed_words);
+        // /* DEBUG */
+        // console.log("Guessed dopo:", updatedGame.guessed_words);
 
         const maskedText = maskText(
             updatedGame.article_text,

@@ -16,7 +16,8 @@ CREATE TABLE games (
     article_text TEXT NOT NULL, /*contenuto dell'articolo*/
 
     guessed_words TEXT[] DEFAULT '{}', /*array delle parola indovinate*/
-
+	wrong_guesses TEXT[] DEFAULT '{}',
+	
     attempts INTEGER DEFAULT 0, /*tentativi effettuati*/
 
     status VARCHAR(20) NOT NULL DEFAULT 'in_progress', /*stato della partita*/
@@ -32,55 +33,3 @@ CREATE TABLE games (
         REFERENCES users(id)
         ON DELETE CASCADE
 );
-
-SELECT * FROM games;
-
-SELECT
-    g.id AS game_id,
-    g.user_id,
-    u.username,
-    g.status,
-    g.started_at
-FROM games g
-JOIN users u ON g.user_id = u.id;
-
-SELECT
-    id,
-    user_id,
-    article_title,
-    status,
-    attempts,
-    guessed_words,
-    started_at
-FROM games;
-
-SELECT id, article_title
-FROM games;
-
-SELECT
-    id,
-    user_id,
-    article_title,
-    status,
-    attempts,
-    started_at,
-    finished_at
-FROM games
-ORDER BY id;
-
-DELETE FROM users WHERE username = 'giulio';
-SELECT * FROM users;
-
-ALTER TABLE games
-ADD COLUMN wrong_guesses TEXT[] DEFAULT '{}';
-
-SELECT * FROM games;
-SELECT id, guessed_words, wrong_guesses
-FROM games;
-
-SELECT
-    id,
-    article_title,
-    status
-FROM games
-ORDER BY id DESC;

@@ -234,16 +234,6 @@ async function getRandomArticle() {
 
         const randomResponse = await wikipediaFetch(randomUrl);
 
-        // if (!randomResponse.ok) {
-
-        //     console.log("Wikipedia status:", randomResponse.status);
-        //     console.log("Wikipedia statusText:", randomResponse.statusText);
-
-        //     throw new Error(
-        //         "Errore nel recupero dell'articolo casuale"
-        //     );
-        // }
-
         const randomData = await randomResponse.json();
 
         const randomPage = randomData.query.random[0];
@@ -277,12 +267,6 @@ async function getRandomArticle() {
             "&origin=*";
 
         const contentResponse = await wikipediaFetch(contentUrl);
-
-        // if (!contentResponse.ok) {
-        //     throw new Error(
-        //         "Errore nel recupero del contenuto dell'articolo"
-        //     );
-        // }
 
         const contentData = await contentResponse.json();
 

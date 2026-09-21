@@ -2,13 +2,8 @@
 const express = require("express");
 const cors = require("cors"); //permette al frontend e backend di comunicare tra loro
 const dotenv = require("dotenv") //serve per leggere configurazioni riservate da un file .env, come i dati di connessione a PostgreSQ
-const pool = require("./db"); //importa ciò che viene esportato dal dile db.js e lo chiamiamo pool
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const authToken = require("./middleware/auth"); //importa il middleware
-const getRandomArticle = require("./services/wikipedia"); //importa la funzione per l'articolo casuale
-const maskText = require("./utils/secretText");
-const normalizeText = require("./utils/normalizeText");
+//const pool = require("./db"); //importa ciò che viene esportato dal dile db.js e lo chiamiamo pool
+
 const authRoutes = require("./routes/authRoutes");
 const gameRoutes = require("./routes/gameRoutes");
 const publicRoutes = require("./routes/publicRoutes");
@@ -37,22 +32,22 @@ app.get("/", (req, res) => {
     });
 });
 
-app.get("/db-test", async (req, res) => {
-    try {
-        const result = await pool.query("SELECT NOW()");
+// app.get("/db-test", async (req, res) => {
+//     try {
+//         const result = await pool.query("SELECT NOW()");
 
-        res.json({
-            message: "Connessione a PostgreSQL riuscita!",
-            databaseTime: result.rows[0].now
-        });
-    } catch (error) {
-        console.error("Errore connessione database:", error);
+//         res.json({
+//             message: "Connessione a PostgreSQL riuscita!",
+//             databaseTime: result.rows[0].now
+//         });
+//     } catch (error) {
+//         console.error("Errore connessione database:", error);
 
-        res.status(500).json({
-            message: "Errore nella connessione a PostgreSQL"
-        });
-    }
-});
+//         res.status(500).json({
+//             message: "Errore nella connessione a PostgreSQL"
+//         });
+//     }
+// });
 
 //avvia il server
 app.listen(PORT, () => {
