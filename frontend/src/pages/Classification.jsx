@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { formatTime } from "../utils/formatTime";
 
 import api from "../services/api";
 
@@ -84,10 +85,7 @@ function Classification() {
                                     <div>
                                         <span>TEMPO MEDIO</span>
                                         <strong>
-                                            {Math.floor(
-                                                classification[1].average_time_seconds / 60
-                                            )}m{" "}
-                                            {classification[1].average_time_seconds % 60}s
+                                            {formatTime(classification[1].average_time_seconds)}
                                         </strong>
                                     </div>
 
@@ -117,10 +115,7 @@ function Classification() {
                                     <div>
                                         <span>TEMPO MEDIO</span>
                                         <strong>
-                                            {Math.floor(
-                                                classification[0].average_time_seconds / 60
-                                            )}m{" "}
-                                            {classification[0].average_time_seconds % 60}s
+                                            {formatTime(classification[0].average_time_seconds)}
                                         </strong>
                                     </div>
 
@@ -150,10 +145,7 @@ function Classification() {
                                     <div>
                                         <span>TEMPO MEDIO</span>
                                         <strong>
-                                            {Math.floor(
-                                                classification[2].average_time_seconds / 60
-                                            )}m{" "}
-                                            {classification[2].average_time_seconds % 60}s
+                                            {formatTime(classification[2].average_time_seconds)}
                                         </strong>
                                     </div>
 
@@ -200,10 +192,7 @@ function Classification() {
                                 </div>
 
                                 <div className="classification-time">
-                                    {Math.floor(
-                                        player.average_time_seconds / 60
-                                    )} min{" "}
-                                    {player.average_time_seconds % 60} sec
+                                    {formatTime(player.average_time_seconds)}
                                 </div>
 
                             </div>

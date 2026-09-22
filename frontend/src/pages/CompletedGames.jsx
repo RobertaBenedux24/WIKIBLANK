@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { formatTime } from "../utils/formatTime";
 
 import api from "../services/api";
 
@@ -109,10 +110,7 @@ function CompletedGames() {
                                 </span>
 
                                 <span>
-                                    {Math.floor(
-                                        game.duration_seconds / 60
-                                    )} min{" "}
-                                    {game.duration_seconds % 60} sec
+                                    {formatTime(game.duration_seconds)}
                                 </span>
 
                                 <span>
