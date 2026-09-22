@@ -33,59 +33,6 @@
 }
 
 /* =========================
-   ELEMENTI COMUNI
-   ========================= */
-.page {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 30px 20px;
-}
-
-.card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 16px;
-}
-
-.form-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-}
-
-.primary-button {
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.secondary-button {
-    border: 1px solid #ccc;
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.error-message {
-    margin-top: 12px;
-}
-
-.success-message {
-    margin-top: 12px;
-}
-
-/* =========================
    HOME PAGE
    ========================= */
 .home-page {
@@ -484,7 +431,7 @@
     padding: 14px 24px;
     border: none;
     border-radius: 8px;
-    bacKground-color: #111111;
+    background-color: #111111;
     color: #ffffff;
     font-size: 16px;
     font-weight: 700;
@@ -834,7 +781,6 @@
     color: #666;
 }
 
-
 /* FORM PAROLA */
 
 .game-word-form {
@@ -871,7 +817,6 @@
     font-weight: 700;
     cursor: pointer;
 }
-
 
 /* FORM TITOLO */
 
@@ -913,7 +858,6 @@
     font-weight: 700;
     cursor: pointer;
 }
-
 
 /* FEEDBACK */
 
@@ -969,7 +913,6 @@
     overflow: hidden;
 }
 
-
 /* CONTENUTO */
 
 .game-win-screen {
@@ -1023,12 +966,10 @@
     color: #333333;
 }
 
-
 /* TITOLO */
 
 .game-win-title {
-    margin: 0 0 18px;
-    margin-bottom: 20px;    
+    margin: 0 0 20px;    
     font-size: 50px;
     line-height: 1.05;
 
@@ -1078,7 +1019,6 @@
 /* PARTE FINALE */
 
 .game-win-result {
-    /*flex-shrink: 0;*/
     margin-top: 16px;
     text-align: center;
 }
@@ -1110,7 +1050,6 @@
 
     color: #666666;
 }
-
 
 /* PULSANTE */
 
@@ -1188,14 +1127,6 @@
 
     .game-page {
         padding: 22px 18px 40px;
-    }
-
-    .game-status-bar {
-        align-items: flex-start;
-    }
-
-    .game-status-bar h1 {
-        font-size: 30px;
     }
 
     .game-interaction-layout {
@@ -2185,6 +2116,7 @@
 
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
 
     overflow: hidden;
