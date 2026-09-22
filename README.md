@@ -3,6 +3,13 @@
 WIKIBLANK è un'applicazione web ispirata al gioco dell'impiccato e basata su articoli di Wikipedia.
 Durante una partita viene selezionato casualmente un articolo tramite MediaWiki API. Il giocatore deve provare a scoprirne il contenuto indovinando parole e, infine, il titolo dell'articolo.
 
+## Struttura del progetto
+- backend/ - API REST e logica server
+- frontend/ - Single Page Application React
+- database/ - script SQL per la creazione del database
+- e2e/ - test End-to-End Playwright
+- playwright.config.js - configurazione Playwrigh
+
 ## Requisiti
 
 Per eseguire il progetto è necessario avere installato:
@@ -74,11 +81,3 @@ Eseguire quindi:
 npx playwright test
 
 La suite contiene 10 test automatici.
-
-## Struttura del progetto
-
-- `backend/` - API REST e logica server
-- `frontend/` - Single Page Application React
-- `database/` - script SQL per la creazione del database
-- `e2e/` - test End-to-End Playwright
-- `playwright.config.js` - configurazione Playwright
