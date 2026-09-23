@@ -1,7 +1,8 @@
 # WIKIBLANK
 
 WIKIBLANK è un'applicazione web ispirata al gioco dell'impiccato e basata su articoli di Wikipedia.
-Durante una partita viene selezionato casualmente un articolo tramite MediaWiki API. Il giocatore deve provare a scoprirne il contenuto indovinando parole e, infine, il titolo dell'articolo.
+Durante una partita viene selezionato casualmente un articolo tramite MediaWiki API. 
+Il giocatore deve provare a scoprirne il contenuto indovinando parole e, infine, il titolo dell'articolo.
 
 ## Configurazione del database
 
