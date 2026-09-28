@@ -1,4 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test'; 
+//test serve per definire il test
+//expect serve a fare una verifica
 
 test('TEST 1: la Home di WIKIBLANK viene caricata correttamente', async ({ page }) => {
 
@@ -70,6 +72,7 @@ test('TEST 3:un utente registrato può effettuare il login', async ({ page, requ
         La registrazione tramite interfaccia è già
         verificata dal Test 2.
     */
+   //rappresenta la risposta HTTP
     const registerResponse = await request.post(
         'http://localhost:3000/api/register',
         {
