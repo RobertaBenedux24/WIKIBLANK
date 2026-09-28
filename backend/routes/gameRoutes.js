@@ -178,17 +178,20 @@ router.post("/:id/guess", authToken, async (req, res) => {
 
         const normalizedWord = word.trim().toLowerCase();
 
+        //controlla le parole già visibili
         const visibleHintWords = getVisibleHintWords(
             game.article_text,
             game.article_title
         );
 
+        //se l'utente tenta una parola già visibile
         if (visibleHintWords.has(normalizedWord)) {
             return res.status(400).json({
                 message: "Questa parola è già visibile nell'articolo"
             });
         }
         
+        //controllo delle parole già indovinate
         const alreadyGuessed = game.guessed_words.some(
             guessedWord => guessedWord.toLowerCase() === normalizedWord
         );
@@ -199,6 +202,7 @@ router.post("/:id/guess", authToken, async (req, res) => {
             });
         }
         
+        //controllo delle parole sbagliate
         const alreadyWrong = (game.wrong_guesses || []).some(
             wrongWord => wrongWord.toLowerCase() === normalizedWord
         );
@@ -209,11 +213,14 @@ router.post("/:id/guess", authToken, async (req, res) => {
             });
         }
 
+        //controllo della parole
         const articleWords = game.article_text.match(
-            /[\p{L}\p{M}]+/gu
+            /[\p{L}\p{M}]+/gu //espressione regolare per estrarre le parole dal testo dell'articolo
         ) || [];
 
+        //se almeno una parola dell'articolo corrisponde al tentativo
         const wordExists = articleWords.some(
+            //confornta ogni parola dell'articolo con quella inserita
             articleWord => articleWord.toLowerCase() === normalizedWord
         );
 
@@ -222,18 +229,20 @@ router.post("/:id/guess", authToken, async (req, res) => {
         // console.log("Parola presente:", wordExists);
         // console.log("Guessed prima:", game.guessed_words);
 
+        //prende le parole corrette già presenti
         let updatedGuessedWords = game.guessed_words || [];
+        //prende le parole sbagliete già presenti
         let updatedWrongGuesses = game.wrong_guesses || [];
 
         if (wordExists) {
-
+            //se abbiamo trovato la parola nell'articolo la aggiungo alle parole indovinate
             updatedGuessedWords = [
                 ...updatedGuessedWords,
                 normalizedWord
             ];
 
         } else {
-
+             //questo array contiene la parola?
             if (!updatedWrongGuesses.includes(normalizedWord)) {
                 updatedWrongGuesses = [
                     ...updatedWrongGuesses,
@@ -260,6 +269,7 @@ router.post("/:id/guess", authToken, async (req, res) => {
         // /* DEBUG */
         // console.log("Guessed dopo:", updatedGame.guessed_words);
 
+        //rigenera il testo
         const maskedText = maskText(
             updatedGame.article_text,
             updatedGame.guessed_words,

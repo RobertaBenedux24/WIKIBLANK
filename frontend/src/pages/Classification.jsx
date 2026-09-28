@@ -65,7 +65,7 @@ function Classification() {
                 <>
                     <section className="classification-podium">
 
-                        {/* SECONDO POSTO */}
+                        {/* SECONDO POSTO mostra la card solo se esiste classificatio[1]*/}
                         {classification[1] && (
                             <article className="podium-card podium-second">
 

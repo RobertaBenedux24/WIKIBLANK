@@ -63,7 +63,7 @@ function CompletedGames() {
 
                 <section className="completed-list">
 
-                    {games.map((game) => (
+                    {games.map((game) /*Ttrasformo ogni oggetto in una card */ => (
 
                         <article
                             key={game.id}

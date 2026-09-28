@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 function Play() {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false); //indica se la partita è in corso
     const [error, setError] = useState("");
-    const [authRequired, setAuthRequired] = useState(false);
+    const [authRequired, setAuthRequired] = useState(false); //serve per stabilire se mostrare un messaggio
 
     const navigate = useNavigate();
 

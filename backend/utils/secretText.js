@@ -1,13 +1,16 @@
 function getVisibleHintWords(text, articleTitle = "") {
 
+    //estrae il titolo
     const titleWords = new Set(
         articleTitle
             .toLowerCase()
             .match(/[\p{L}\p{M}]+/gu) || []
     );
 
+    //estrae le parole
     const words = text.match(/[\p{L}\p{M}]+/gu) || [];
 
+    //trasforma ogni parola in minuscolo
     const normalizedWords = words.map(
         word => word.toLowerCase()
     );

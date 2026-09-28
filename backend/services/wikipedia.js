@@ -8,7 +8,8 @@ function shortenText(text, maxLength = 1800) {
     }
 
     const shortened = text.slice(0, maxLength);
-
+     
+    //per evitare frasi tagliate a metà
     const lastPeriod = shortened.lastIndexOf(".");
     const lastExclamation = shortened.lastIndexOf("!");
     const lastQuestion = shortened.lastIndexOf("?");
@@ -19,6 +20,7 @@ function shortenText(text, maxLength = 1800) {
         lastQuestion
     );
 
+    //se uno dei caratteri è stato trovato taglia il testo
     if (lastSentenceEnd !== -1) {
         return shortened
             .slice(0, lastSentenceEnd + 1)
@@ -47,11 +49,13 @@ function cleanWikipediaText(text) {
         "Voci correlate e altri progetti"
     ];
 
+    //array con le sezioni da eliminare
     let cleanedText = text;
 
     for (const section of sectionsToRemove) {
         const sectionIndex = cleanedText.indexOf(`\n${section}\n`);
 
+        //elimina tutto ciò che si trova dopo la sezione eliminata
         if (sectionIndex !== -1) {
             cleanedText = cleanedText.slice(0, sectionIndex);
         }
@@ -66,7 +70,7 @@ function removeUselessLines(text) {
         return "";
     }
 
-    const lines = text.split("\n");
+    const lines = text.split("\n"); //divide il testo in righe
 
     const cleanedLines = [];
 
@@ -79,8 +83,10 @@ function removeUselessLines(text) {
             continue;
         }
 
+        //conto il numero di parole nella riga
         const wordCount = trimmed.split(/\s+/).length;
 
+        //controllo se la riga termina con .!?
         const hasSentencePunctuation =
             /[.!?]$/.test(trimmed);
 
@@ -104,10 +110,6 @@ function removeUselessLines(text) {
             continue;
         }
 
-        /*
-            Elimina frammenti estremamente corti
-            che non hanno abbastanza contenuto per il gioco.
-        */
         if (
             trimmed.length < 45 &&
             wordCount < 8 &&
@@ -119,7 +121,7 @@ function removeUselessLines(text) {
         cleanedLines.push(trimmed);
     }
 
-    return cleanedLines.join("\n");
+    return cleanedLines.join("\n"); //unisco il testo
 }
 
 
@@ -129,19 +131,13 @@ function removeShortParagraphs(text) {
     }
 
     const paragraphs = text
-        .split(/\n\s*\n/)
-        .map(paragraph => paragraph.trim())
+        .split(/\n\s*\n/) //divido il testo in paragrafi
+        .map(paragraph => paragraph.trim()) //elimino gli spazi
         .filter(Boolean);
 
     const usefulParagraphs = paragraphs.filter(paragraph => {
 
-        const words = paragraph.split(/\s+/);
-
-        /*
-            Se un paragrafo ha meno di 12 parole,
-            probabilmente è troppo piccolo per essere utile
-            nel gioco.
-        */
+        const words = paragraph.split(/\s+/); 
         return words.length >= 12;
     });
 
@@ -190,7 +186,7 @@ async function wikipediaFetch(url, maxRetries = 3) {
             if (retryAfter && !Number.isNaN(Number(retryAfter))) {
                 waitTime = Number(retryAfter) * 1000;
             } else {
-                // 2s → 4s → 8s
+                
                 waitTime = 5000 * Math.pow(2, attempt);
             }
 

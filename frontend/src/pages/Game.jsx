@@ -8,16 +8,16 @@ import winGif from "../assets/win.gif";
 import abandonGif from "../assets/abb.gif";
 
 function Game() {
-    const { id } = useParams();
+    const { id } = useParams(); //recupera il parametro dimanico
     const navigate = useNavigate();
 
-    const [game, setGame] = useState(null);
+    const [game, setGame] = useState(null); //ocntine i dati recuperati di una partita dal backend
     const [word, setWord] = useState("");
     const [title, setTitle] = useState("");
 
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); //stiamo aspettando il caricamento dell pagina
 
     useEffect(() => {
         loadGame();
